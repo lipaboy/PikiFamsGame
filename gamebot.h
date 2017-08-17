@@ -9,7 +9,7 @@
 namespace PikiFamsGameBot {
 
 	using PikiFamsGame::GameCreator;
-	using PikiFamsGame::Numbers;
+	using PikiFamsGame::DigitType;
 	using PikiFamsGame::Array4Digits;
 	using PikiFamsGame::GameStepInfo;
 	using std::set;
@@ -19,8 +19,9 @@ namespace PikiFamsGameBot {
 	class GameSet {
 	public:
 
-	private:
-		//set<Numbers> 
+	public:
+		set<DigitType> plenty;
+		uint32_t value;		//count digits that precense into that set
 	};
 
 	//return game step count
