@@ -1,6 +1,9 @@
 #include "GameCreator.h"
 
 #include <algorithm>
+#include <list>
+#include <iostream>
+#include <iterator>
 
 namespace PikiFamsGame {
 	GameCreator::GameCreator(const Array4Digits& _guessingNumber) : guessingNumber(_guessingNumber)
@@ -9,6 +12,25 @@ namespace PikiFamsGame {
 	/*	std::transform(_guessingNumber.cbegin(), _guessingNumber.cend(),
 			guessingNumber.begin(), [](int digit) -> int { return digit % 10; });*/
 	}
+
+	GameCreator::GameCreator()
+	{
+		using std::list;
+		time_t t;
+		srand((unsigned)time(&t));
+		list<DigitType> digits({ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 });
+		list<DigitType>::iterator it;
+		for (uint32_t i = 0; i < guessingNumber.size(); i++) {
+			it = digits.begin();
+			std::advance(it, rand() % digits.size());
+			guessingNumber[i] = *it;
+			digits.erase(it, it);
+		}
+
+		std::copy(guessingNumber.cbegin(), guessingNumber.cend(), 
+			std::ostream_iterator<DigitType>(std::cout, " "));
+	}
+
 	GameStepInfo GameCreator::guess(const Array4Digits & likelyNumber)
 	{
 		GameStepInfo info = { 0, 0 };

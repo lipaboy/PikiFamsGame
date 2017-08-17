@@ -16,10 +16,7 @@ namespace PikiFamsGameBot {
 
 	//Special sets
 
-	class GameSet {
-	public:
-
-	public:
+	struct GameSet {
 		set<DigitType> plenty;
 		uint32_t value;		//count digits that precense into that set
 	};

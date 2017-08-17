@@ -3,6 +3,8 @@
 
 #include <array>
 #include <set>
+#include <stdlib.h>
+#include <time.h>
 
 namespace PikiFamsGame { 
 
@@ -20,6 +22,7 @@ namespace PikiFamsGame {
 	public:
 		//4-digit number
 		GameCreator(const Array4Digits& _guessingNumber);
+		GameCreator();
 
 		GameStepInfo guess(const Array4Digits& likelyNumber);
 
