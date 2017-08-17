@@ -1,8 +1,10 @@
 #include <iostream>
 
 #include "GameCreator.h"
+#include "gamebot.h"
 
 using namespace PikiFamsGame;
+using namespace PikiFamsGameBot;
 
 int main(void) {
 	using std::cout;
@@ -10,9 +12,11 @@ int main(void) {
 
 	GameCreator game({ 1, 2, 3, 4 });
 
-	GameStepInfo info = game.guess({ 1, 0, 4, 9 });
+	//GameStepInfo info = game.guess({ 1, 0, 4, 9 });
 
-	cout << info.piki << "piki " << info.fams << "fams" << endl;
+	solveTheGame(game);
+
+	//cout << info.piki << "piki " << info.fams << "fams" << endl;
 
 	return 0;
 }

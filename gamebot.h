@@ -5,10 +5,14 @@
 
 #include "GameCreator.h"
 
-namespace PikiFamsGame {
+namespace PikiFamsGameBot {
 
-	//return step count
-	uint32_t solveTheGame(const GameCreator& game);
+	using namespace PikiFamsGame;
+
+
+
+	//return game step count
+	uint32_t solveTheGame(GameCreator game);
 
 }
 
