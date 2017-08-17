@@ -15,7 +15,7 @@ int main(void) {
 
 	//GameStepInfo info = game.guess({ 1, 0, 4, 9 });
 
-	solveTheGame(game2);
+	solveTheGame(game);
 
 	//cout << info.piki << "piki " << info.fams << "fams" << endl;
 
