@@ -17,7 +17,12 @@ namespace PikiFamsGame {
 
 		for (uint32_t i = 0; i < guessingNumber.size(); i++) {
 			for (uint32_t j = 0; j < likelyNumber.size(); j++) {
-				if (guessingNumber[i] == likelyNumber[i])
+				if (guessingNumber[i] == likelyNumber[j]) {
+					if (i == j)
+						++(info.piki);
+					else
+						++(info.fams);
+				}
 			}
 		}
 

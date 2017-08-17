@@ -20,7 +20,7 @@ namespace PikiFamsGame {
 		//4-digit number
 		GameCreator(const Array4Digits& _guessingNumber);
 
-		GameStepInfo guess(const Array4Digits& likelyNumber) const;
+		GameStepInfo guess(const Array4Digits& likelyNumber);
 
 	private:
 		Array4Digits guessingNumber;
