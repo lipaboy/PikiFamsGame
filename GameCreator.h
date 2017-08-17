@@ -22,6 +22,8 @@ namespace PikiFamsGame {
 
 		GameStepInfo guess(const Array4Digits& likelyNumber);
 
+		uint32_t getStepCount() const { return stepCount; }
+
 	private:
 		Array4Digits guessingNumber;
 		uint32_t stepCount = 0;

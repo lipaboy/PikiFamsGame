@@ -22,6 +22,7 @@ namespace PikiFamsGame {
 						++(info.piki);
 					else
 						++(info.fams);
+					break;
 				}
 			}
 		}
