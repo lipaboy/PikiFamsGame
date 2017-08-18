@@ -27,8 +27,8 @@ namespace PikiFamsGame {
 			digits.erase(it, it);
 		}
 
-		std::copy(guessingNumber.cbegin(), guessingNumber.cend(), 
-			std::ostream_iterator<DigitType>(std::cout, " "));
+		/*std::copy(guessingNumber.cbegin(), guessingNumber.cend(), 
+			std::ostream_iterator<DigitType>(std::cout, " "));*/
 	}
 
 	GameStepInfo GameCreator::guess(const Array4Digits & likelyNumber)
