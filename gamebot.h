@@ -21,7 +21,7 @@ namespace PikiFamsGameBot {
 	using LipaboyLib::cutOffLeftBorder;
 	using LipaboyLib::Comparable;
 
-	typedef CloseInterval<int> PossibleResultSet;
+	typedef CloseInterval<int> PossibleResultInterval;
 	constexpr uint32_t stepLength = 4u;
 	//Special sets
 
@@ -43,9 +43,9 @@ namespace PikiFamsGameBot {
 		uint32_t value;		//count digits that precense into that set
 	};
 
-	//PossibleResultSet isn't a real set
-	inline PossibleResultSet calculatePossibleResultSet(const GameSet& set1, const uint32_t subsetLength) { 
-		return PossibleResultSet(
+	//PossibleResultInterval isn't a real set
+	inline PossibleResultInterval calculatePossibleResultSet(const GameSet& set1, const uint32_t subsetLength) { 
+		return PossibleResultInterval(
 			std::max<signed int>(0, static_cast<signed int>(set1.value - (set1.plenty.size() - subsetLength))),
 			std::min<signed int>(set1.value, subsetLength)
 		);

@@ -22,7 +22,7 @@ namespace PikiFamsGameBot {
 			//take only one set
 			set<GameSet>::iterator it;
 			for (it = world.begin(); it != world.end(); it++) {
-				//PossibleResultSet posResSet = calculatePossibleResultSet(*it);
+				//PossibleResultInterval posResSet = calculatePossibleResultSet(*it);
 			}
 
 			//Combining the step
@@ -41,9 +41,9 @@ namespace PikiFamsGameBot {
 		return game.getStepCount();
 	}
 
-	/*PossibleResultSet calculatePossibleResultSet(const GameSet& set1)
+	/*PossibleResultInterval calculatePossibleResultSet(const GameSet& set1)
 	{
-		return PossibleResultSet();
+		return PossibleResultInterval();
 	}*/
 
 }
