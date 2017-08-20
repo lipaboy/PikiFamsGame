@@ -15,11 +15,11 @@ int main(void) {
 
 	//GameStepInfo info = game.guess({ 1, 0, 4, 9 });
 
-	//solveTheGame(game);
+	solveTheGame(game);
 
-	PossibleResultInterval pos =
-		calculatePossibleResultSet(GameSet(set<DigitType>({ 0, 1, 2 }), 2u), 2u);
-	cout << pos.left() << " " << pos.right() << endl;
+	//PossibleResultInterval pos =
+	//	calculatePossibleResultSet(GameSet(set<DigitType>({ 0, 1, 2 }), 2u), 2u);
+	//cout << pos.left() << " " << pos.right() << endl;
 
 	//cout << info.piki << "piki " << info.fams << "fams" << endl;
 

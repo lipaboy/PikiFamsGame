@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <set>
+#include <vector>
 #include <algorithm>
 
 #include "GameCreator.h"
@@ -16,33 +17,34 @@ namespace PikiFamsGameBot {
 	using PikiFamsGame::DigitType;
 	using PikiFamsGame::Array4Digits;
 	using PikiFamsGame::GameStepInfo;
+
 	using std::set;
+	using std::vector;
+
 	using LipaboyLib::CloseInterval;
-	using LipaboyLib::cutOffLeftBorder;
 	using LipaboyLib::Comparable;
 
 	typedef CloseInterval<int> PossibleResultInterval;
 	constexpr uint32_t stepLength = 4u;
+	
 	//Special sets
 
-	//TODO: implement from Comparable
-	class GameSet //: public Comparable 
+	struct GameSet
 	{
-	public:
 		GameSet(set<DigitType> _plenty = set<DigitType>(), uint32_t _value = 0)
 			: plenty(_plenty), value(_value) {}
-
-		//bool operator<(const Comparable& other) const {
-		//	return (value < dynamic_cast<const GameSet&>(other).value);
-		//}
-		//bool operator==(const Comparable& other) const {
-		//	return false;		//because if value == other.value then set will drop that item
-		//}
-
-	public:
 		set<DigitType> plenty;
 		uint32_t value;		//count digits that precense into that set
 	};
+
+	typedef vector<GameSet> WorldSet;
+
+	struct GameSubSet {
+		WorldSet::iterator baseIt;
+		uint32_t size;
+	};
+
+	typedef vector<GameSubSet> StepStructure;
 
 	//PossibleResultInterval isn't a real set
 	inline PossibleResultInterval calculatePossibleResultSet(const GameSet& set1, const uint32_t subsetLength) { 
