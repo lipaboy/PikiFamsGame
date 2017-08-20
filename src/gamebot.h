@@ -26,17 +26,18 @@ namespace PikiFamsGameBot {
 	//Special sets
 
 	//TODO: implement from Comparable
-	class GameSet : public Comparable {
+	class GameSet //: public Comparable 
+	{
 	public:
 		GameSet(set<DigitType> _plenty = set<DigitType>(), uint32_t _value = 0)
 			: plenty(_plenty), value(_value) {}
 
-		bool operator<(const Comparable& other) const {
-			return (value < dynamic_cast<const GameSet&>(other).value);
-		}
-		bool operator==(const Comparable& other) const {
-			return (value == dynamic_cast<const GameSet&>(other).value);
-		}
+		//bool operator<(const Comparable& other) const {
+		//	return (value < dynamic_cast<const GameSet&>(other).value);
+		//}
+		//bool operator==(const Comparable& other) const {
+		//	return false;		//because if value == other.value then set will drop that item
+		//}
 
 	public:
 		set<DigitType> plenty;

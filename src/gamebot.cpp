@@ -1,8 +1,11 @@
 #include "gamebot.h"
 
 #include <algorithm>
+#include <vector>
 
 namespace PikiFamsGameBot {
+
+	using std::vector;
 	
 	uint32_t solveTheGame(GameCreator game)
 	{
@@ -12,7 +15,7 @@ namespace PikiFamsGameBot {
 
 		GameSet digits(set<DigitType>({ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }), 4u);
 
-		set<GameSet> world({ digits });		//world is a set of current GameSets
+		vector<GameSet> world({ digits });		//world is a set of current GameSets
 		GameStepInfo info;
 		GameSet setStep;
 		Array4Digits appropriateStep;
@@ -20,9 +23,18 @@ namespace PikiFamsGameBot {
 			//Collect the necessary information
 
 			//take only one set
-			set<GameSet>::iterator it;
+			vector<GameSet>::iterator it,
+				bestGameSetIt = world.end();
+			int minLength = INT_MAX;		//2 - it is our minimum (not 1)
 			for (it = world.begin(); it != world.end(); it++) {
-				//PossibleResultInterval posResSet = calculatePossibleResultSet(*it);
+				if (it->plenty.size() >= 4) {
+					PossibleResultInterval posResSet = calculatePossibleResultSet(*it, 4);
+					int combinationCount = posResSet.right() - posResSet.left();
+					if (combinationCount > 1 && combinationCount < minLength) {
+						bestGameSetIt = it;
+						minLength = combinationCount;
+					}
+				}
 			}
 
 			//Combining the step

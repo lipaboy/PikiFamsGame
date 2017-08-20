@@ -17,8 +17,7 @@ int main(void) {
 
 	//solveTheGame(game);
 
-	//TODO: write test for this function!!!!
-	PossibleResultSet pos = 
+	PossibleResultInterval pos =
 		calculatePossibleResultSet(GameSet(set<DigitType>({ 0, 1, 2 }), 2u), 2u);
 	cout << pos.left() << " " << pos.right() << endl;
 
