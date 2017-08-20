@@ -1,7 +1,7 @@
 #include "Test_hd.h"
 
-#include "PikiFamsGame\gamebot.h"
-#include "lipaboyLibrary\src\intervals\interval.h"
+#include "..\gamebot.h"
+#include "..\lipaboyLibrary\src\intervals\interval.h"
 
 #include <set>
 
@@ -44,7 +44,7 @@ TEST_F(TestCalculatePossibleResultSet_QuatroSet, fourth) {
 }
 
 
-
+/*---For intervals---*/
 
 TEST(TestInterval, operatorEqual) {
 	Interval<int, std::less<int>, std::less<int> > interval1(0, 1);

@@ -6,9 +6,9 @@
 #include <algorithm>
 
 #include "GameCreator.h"
-#include "../lipaboyLibrary/src/intervals/interval.h"
-#include "../lipaboyLibrary/src/intervals/cutoffborders.h"
-#include "../lipaboyLibrary/src/common_interfaces/comparable.h"
+#include "lipaboyLibrary/src/intervals/interval.h"
+#include "lipaboyLibrary/src/intervals/cutoffborders.h"
+#include "lipaboyLibrary/src/common_interfaces/comparable.h"
 
 namespace PikiFamsGameBot {
 
