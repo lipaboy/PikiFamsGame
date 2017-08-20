@@ -1,7 +1,7 @@
 #include "Test_hd.h"
 
-#include "..\gamebot.h"
-#include "..\lipaboyLibrary\src\intervals\interval.h"
+#include "..\src\gamebot.h"
+#include "..\src\lipaboyLibrary\src\intervals\interval.h"
 
 #include <set>
 
