@@ -6,6 +6,7 @@
 #include <unordered_set>
 #include <vector>
 #include <algorithm>
+#include <iterator>
 
 #include "GameCreator.h"
 #include "lipaboyLibrary/src/intervals/interval.h"
@@ -47,7 +48,7 @@ namespace PikiFamsGameBot {
 	typedef vector<GameSet> WorldSet;
 
 	struct GameSubSet {
-		WorldSet::iterator baseIt;
+		WorldSet::const_iterator baseIt;
 		uint32_t size;
 	};
 
@@ -68,7 +69,7 @@ namespace PikiFamsGameBot {
 		);
 	}		// Using signed int is justified by correct calculation
 
-
+	void combineTheBestStep(const WorldSet& world, StepStructure & stepStructure);
 
 	//return game step count
 	SolvingInfo solveTheGame(GameCreator game);

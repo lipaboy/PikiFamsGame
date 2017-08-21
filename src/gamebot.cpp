@@ -4,8 +4,32 @@
 
 namespace PikiFamsGameBot {
 
-	SolvingInfo solveTheGame(GameCreator game)
-	{
+	//TODO: replace WorldSet on any_range (only reading the world container)
+	void combineTheBestStep(const WorldSet & world, StepStructure & stepStructure) {
+		//1. Sort out the one-set sets
+
+		stepStructure.resize(1u);
+		stepStructure[0].size = stepLength;
+
+		WorldSet::const_iterator it;
+		int minLength = INT_MAX;		//2 - it is our minimum (not 1)
+		for (it = world.cbegin(); it != world.cend(); it++) {
+			if (it->plenty.size() > stepLength) {	//size == stepLength - is useless because we will know nothing new about that set
+				PossibleResultInterval posResSet = calculatePossibleResultSet(*it, stepLength);
+				//signed int for unpredictable behavior
+				int combinationCount = posResSet.right() - posResSet.left();	
+						//My criterion for selection best step
+				if (combinationCount > 1 && combinationCount < minLength) {
+					stepStructure[0].baseIt = it;
+					minLength = combinationCount;
+				}
+			}
+		}
+
+		//"return stepStructure"
+	}
+
+	SolvingInfo solveTheGame(GameCreator game) {
 		std::srand(static_cast<uint32_t>(time(0)));
 		//Start
 
@@ -16,42 +40,27 @@ namespace PikiFamsGameBot {
 		//TODO: read about reserve and clear: how you can use vector array without reallocation
 		//TODO: think about what be better: vector or list. You need to sort out the array and delete items from it
 		WorldSet world({ digits });		//world is a set of current GameSets
-		StepStructure stepBuild;
-		stepBuild.reserve(stepLength);
+		StepStructure stepStructure;
+		stepStructure.reserve(stepLength);
 
 		GameSet step;
 		DigitArray appropriateStep;
 		do {
-			stepBuild.clear();
+			stepStructure.clear();
 			step.plenty.clear();
 
 			//--------------------------Collect the necessary information----------------------------//
 
-			//Take only one-set
+			//Input: world
+			combineTheBestStep(world, stepStructure);
+			//Output: stepStructure
 
-			stepBuild.resize(1u);
-			stepBuild[0].size = stepLength;
+			//--------------------------Building the step--------------------------//
 
-			WorldSet::iterator it;
-			int minLength = INT_MAX;		//2 - it is our minimum (not 1)
-			for (it = world.begin(); it != world.end(); it++) {
-				if (it->plenty.size() > stepLength) {	//size == stepLength - is useless because we will know nothing new about that set
-					PossibleResultInterval posResSet = calculatePossibleResultSet(*it, stepLength);
-					int combinationCount = posResSet.right() - posResSet.left();	//signed int for unpredictable behavior
-					//My criterion for selection best step
-					if (combinationCount > 1 && combinationCount < minLength) {
-						stepBuild[0].baseIt = it;
-						minLength = combinationCount;
-					}
-				}
-			}
-
-			//--------------------------Combining the step--------------------------//
-
-			for (uint32_t i = 0; i < stepBuild.size(); i++) {
-				DigitSet plenty = stepBuild[i].baseIt->plenty;
-				DigitSet::iterator it;
-				for (uint32_t j = 0; j < stepBuild[i].size; j++) {
+			for (uint32_t i = 0; i < stepStructure.size(); i++) {
+				DigitSet plenty = stepStructure[i].baseIt->plenty;
+				DigitSet::const_iterator it;
+				for (uint32_t j = 0; j < stepStructure[i].size; j++) {
 					it = plenty.begin();
 					std::advance(it, rand() % plenty.size());
 					step.plenty.insert(*it);
@@ -79,30 +88,30 @@ namespace PikiFamsGameBot {
 			GameSet residue;
 
 			//Works only at beginning two steps
-			if (stepBuild.size() <= 1) {
+			if (stepStructure.size() <= 1) {
 				//1. Exclude from superset the step to get residue
-				const DigitSet & plenty = stepBuild[0].baseIt -> plenty;
+				const DigitSet & plenty = stepStructure[0].baseIt -> plenty;
 				DigitSet temp;
 				std::set_difference(plenty.cbegin(), plenty.cend(), 
 					step.plenty.cbegin(), step.plenty.cend(), 
 					std::inserter(temp, temp.begin()));
 
 				residue.plenty = temp;
-				residue.value = stepBuild[0].baseIt->value - step.value;
+				residue.value = stepStructure[0].baseIt->value - step.value;
 				world.push_back(step);
 			}
 			else {
 				//1. exclude from step sets that we use for combining this step 
 				//and belong to world set (i.e. are the entire set)
 
-				for (uint32_t i = 0; i < stepBuild.size(); i++) {
-					const DigitSet & plenty = stepBuild[i].baseIt->plenty;
-					if (plenty.size() == stepBuild[i].size) {	//if set that we use has size the same as its superset
+				for (uint32_t i = 0; i < stepStructure.size(); i++) {
+					const DigitSet & plenty = stepStructure[i].baseIt->plenty;
+					if (plenty.size() == stepStructure[i].size) {	//if set that we use has size the same as its superset
 						DigitSet temp;
 						std::set_difference(step.plenty.cbegin(), step.plenty.cend(), 
 							plenty.cbegin(), plenty.cend(), std::inserter(temp, temp.begin()));
 						step.plenty = temp;
-						step.value -= stepBuild[i].baseIt->value;
+						step.value -= stepStructure[i].baseIt->value;
 					}
 				}
 
@@ -112,7 +121,7 @@ namespace PikiFamsGameBot {
 			//2. Analysing the residue
 
 			if (residue.plenty.size() == residue.value || 0 == residue.value) {
-				DigitSet::iterator it;
+				DigitSet::const_iterator it;
 				for (it = residue.plenty.cbegin(); it != residue.plenty.cend(); it++) {
 					world.emplace_back(DigitSet({ *it }),
 						(residue.value > 0u));	//every set has value 1 (if set.size == value),
@@ -129,10 +138,5 @@ namespace PikiFamsGameBot {
 		
 		return { step.plenty, game.getStepCount() };
 	}
-
-	/*PossibleResultInterval calculatePossibleResultSet(const GameSet& set1)
-	{
-		return PossibleResultInterval();
-	}*/
 
 }
