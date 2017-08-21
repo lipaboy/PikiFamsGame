@@ -112,7 +112,12 @@ namespace PikiFamsGameBot {
 			//2. Analysing the residue
 
 			if (residue.plenty.size() == residue.value || 0 == residue.value) {
-				
+				set<DigitType>::iterator it;
+				for (it = residue.plenty.cbegin(); it != residue.plenty.cend(); it++) {
+					world.emplace_back(set<DigitType>({ *it }), 
+						(residue.value > 0u));	//every set has value 1 (if set.size == value),
+											//or 0 (if set.size == 0)
+				}
 			}
 
 		} while (0 == 1);

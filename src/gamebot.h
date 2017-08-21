@@ -35,7 +35,7 @@ namespace PikiFamsGameBot {
 	{
 		GameSet(set<DigitType> _plenty = set<DigitType>(), uint32_t _value = 0)
 			: plenty(_plenty), value(_value) {}
-		set<DigitType> plenty;
+		set<DigitType> plenty;		//using set instead of unordered_set because in my program plenty has small size. It means the access is better than unordered_set's
 		uint32_t value;		//count digits that precense into that set
 	};
 
