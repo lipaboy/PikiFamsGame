@@ -66,6 +66,24 @@ namespace PikiFamsGameBot {
 		return residue;
 	}
 
+	void updateWorld(WorldSet & world, const GameSet & step, const StepStructure & stepStructure, 
+		const GameSet & residue)
+	{
+		if (stepStructure.size() <= 1)	//It means that step is subset of a world's set
+			world.push_back(step);
+
+		if (residue.plenty.size() == residue.value || 0 == residue.value) {
+			DigitSet::const_iterator it;
+			for (it = residue.plenty.cbegin(); it != residue.plenty.cend(); it++)
+				world.emplace_back(DigitSet({ *it }),
+					(residue.value > 0u));	//every set has value 1 (if set.size == value),
+											//or 0 (if set.size == 0)
+		}
+		else {
+			world.push_back(residue);	//?????
+		}
+	}
+
 	SolvingInfo solveTheGame(GameCreator game) {
 		std::srand(static_cast<uint32_t>(time(0)));
 		//Start
@@ -124,26 +142,11 @@ namespace PikiFamsGameBot {
 
 			//--------------------------Analyzing the step--------------------------//
 
-			//Input: world, step, stepStructure
+			//1. Calculate the residue
 			GameSet residue = calculateResidue(world, step, stepStructure);
-			//Output: residue
 
-			//2. Analysing the residue
-
-			if (stepStructure.size() <= 1)	//It means that step is subset of a world's set
-				world.push_back(step);
-
-			if (residue.plenty.size() == residue.value || 0 == residue.value) {
-				DigitSet::const_iterator it;
-				for (it = residue.plenty.cbegin(); it != residue.plenty.cend(); it++) {
-					world.emplace_back(DigitSet({ *it }),
-						(residue.value > 0u));	//every set has value 1 (if set.size == value),
-											//or 0 (if set.size == 0)
-				}
-			}
-			else {
-				world.push_back(residue);	//?????
-			}
+			//2. Analysing the residue or update the world
+			updateWorld(world, step, stepStructure, residue);
 
 		} while (0 == 1);
 
