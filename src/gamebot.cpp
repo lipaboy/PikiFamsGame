@@ -119,6 +119,9 @@ namespace PikiFamsGameBot {
 											//or 0 (if set.size == 0)
 				}
 			}
+			else {
+				world.push_back(residue);	//?????
+			}
 
 		} while (0 == 1);
 
