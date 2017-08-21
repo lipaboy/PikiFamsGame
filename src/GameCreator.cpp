@@ -6,7 +6,7 @@
 #include <iterator>
 
 namespace PikiFamsGame {
-	GameCreator::GameCreator(const Array4Digits& _guessingNumber) : guessingNumber(_guessingNumber)
+	GameCreator::GameCreator(const DigitArray& _guessingNumber) : guessingNumber(_guessingNumber)
 	{
 		//TODO: all the digits must be different
 	/*	std::transform(_guessingNumber.cbegin(), _guessingNumber.cend(),
@@ -31,7 +31,7 @@ namespace PikiFamsGame {
 			std::ostream_iterator<DigitType>(std::cout, " "));*/
 	}
 
-	GameStepInfo GameCreator::guess(const Array4Digits & likelyNumber)
+	GameStepInfo GameCreator::guess(const DigitArray & likelyNumber)
 	{
 		GameStepInfo info = { 0, 0 };
 

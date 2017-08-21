@@ -10,10 +10,11 @@ namespace PikiFamsGame {
 
 	using std::array;
 	typedef uint32_t DigitType;
+	constexpr uint32_t stepLength = 4u;
 
 	//You can use digits from 0 to 9
 	//TODO: may be create set<int> with this numbers
-	typedef std::array<DigitType, 4> Array4Digits;
+	typedef std::array<DigitType, stepLength> DigitArray;
 	//std::set<int> Digits({ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 });
 
 	struct GameStepInfo;
@@ -21,15 +22,15 @@ namespace PikiFamsGame {
 	class GameCreator {
 	public:
 		//4-digit number
-		GameCreator(const Array4Digits& _guessingNumber);
+		GameCreator(const DigitArray& _guessingNumber);
 		GameCreator();
 
-		GameStepInfo guess(const Array4Digits& likelyNumber);
+		GameStepInfo guess(const DigitArray& likelyNumber);
 
 		uint32_t getStepCount() const { return stepCount; }
 
 	private:
-		Array4Digits guessingNumber;
+		DigitArray guessingNumber;
 		uint32_t stepCount = 0;
 	};
 

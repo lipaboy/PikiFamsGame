@@ -16,8 +16,9 @@ namespace PikiFamsGameBot {
 
 	using PikiFamsGame::GameCreator;
 	using PikiFamsGame::DigitType;
-	using PikiFamsGame::Array4Digits;
+	using PikiFamsGame::DigitArray;
 	using PikiFamsGame::GameStepInfo;
+	using PikiFamsGame::stepLength;
 
 	using std::set;
 	using std::vector;
@@ -27,7 +28,6 @@ namespace PikiFamsGameBot {
 	using LipaboyLib::Comparable;
 
 	typedef CloseInterval<int> PossibleResultInterval;
-	constexpr uint32_t stepLength = 4u;
 	
 	//Special sets
 
