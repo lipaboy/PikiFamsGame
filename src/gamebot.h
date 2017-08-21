@@ -54,7 +54,8 @@ namespace PikiFamsGameBot {
 	typedef vector<GameSubSet> StepStructure;
 
 	struct SolvingInfo {
-		//set<DigitType> 
+		DigitSet guessedNumber;
+		uint32_t stepCount;
 	};
 
 	//--------------------------Functions---------------------------//
@@ -70,7 +71,7 @@ namespace PikiFamsGameBot {
 
 
 	//return game step count
-	uint32_t solveTheGame(GameCreator game);
+	SolvingInfo solveTheGame(GameCreator game);
 
 }
 

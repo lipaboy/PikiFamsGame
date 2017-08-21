@@ -4,7 +4,7 @@
 
 namespace PikiFamsGameBot {
 
-	uint32_t solveTheGame(GameCreator game)
+	SolvingInfo solveTheGame(GameCreator game)
 	{
 		std::srand(static_cast<uint32_t>(time(0)));
 		//Start
@@ -126,8 +126,8 @@ namespace PikiFamsGameBot {
 		} while (0 == 1);
 
 		//Wherever end of cycle
-
-		return game.getStepCount();
+		
+		return { step.plenty, game.getStepCount() };
 	}
 
 	/*PossibleResultInterval calculatePossibleResultSet(const GameSet& set1)
