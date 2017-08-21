@@ -29,6 +29,43 @@ namespace PikiFamsGameBot {
 		//"return stepStructure"
 	}
 
+	GameSet calculateResidue(const WorldSet & world, const GameSet & step, const StepStructure& stepStructure)
+	{
+		GameSet residue;
+
+		//Works only at beginning two steps
+		if (stepStructure.size() <= 1) {	//It means that step is subset of a world's set
+			//1. Exclude from superset the step to get residue
+			const DigitSet & plenty = stepStructure[0].baseIt->plenty;
+			DigitSet temp;
+			std::set_difference(plenty.cbegin(), plenty.cend(),
+				step.plenty.cbegin(), step.plenty.cend(),
+				std::inserter(temp, temp.begin()));
+
+			residue.plenty = temp;
+			residue.value = stepStructure[0].baseIt->value - step.value;
+			//world.push_back(step);
+		}
+		else {
+			//1. exclude from step sets that we use for combining this step 
+			//and belong to world set (i.e. are the entire set)
+
+			residue = step;
+			for (uint32_t i = 0; i < stepStructure.size(); i++) {
+				const DigitSet & plenty = stepStructure[i].baseIt->plenty;
+				if (plenty.size() == stepStructure[i].size) {	//if set that we use has size the same as its superset
+					DigitSet temp;
+					std::set_difference(residue.plenty.cbegin(), residue.plenty.cend(),
+						plenty.cbegin(), plenty.cend(), std::inserter(temp, temp.begin()));
+					residue.plenty = temp;
+					residue.value -= stepStructure[i].baseIt->value;
+				}
+			}
+		}
+
+		return residue;
+	}
+
 	SolvingInfo solveTheGame(GameCreator game) {
 		std::srand(static_cast<uint32_t>(time(0)));
 		//Start
@@ -51,12 +88,14 @@ namespace PikiFamsGameBot {
 
 			//--------------------------Collect the necessary information----------------------------//
 
+			//TODO: necessary test it
 			//Input: world
 			combineTheBestStep(world, stepStructure);
 			//Output: stepStructure
 
 			//--------------------------Building the step--------------------------//
 
+			//Not interesting to test
 			for (uint32_t i = 0; i < stepStructure.size(); i++) {
 				DigitSet plenty = stepStructure[i].baseIt->plenty;
 				DigitSet::const_iterator it;
@@ -85,40 +124,14 @@ namespace PikiFamsGameBot {
 
 			//--------------------------Analyzing the step--------------------------//
 
-			GameSet residue;
-
-			//Works only at beginning two steps
-			if (stepStructure.size() <= 1) {
-				//1. Exclude from superset the step to get residue
-				const DigitSet & plenty = stepStructure[0].baseIt -> plenty;
-				DigitSet temp;
-				std::set_difference(plenty.cbegin(), plenty.cend(), 
-					step.plenty.cbegin(), step.plenty.cend(), 
-					std::inserter(temp, temp.begin()));
-
-				residue.plenty = temp;
-				residue.value = stepStructure[0].baseIt->value - step.value;
-				world.push_back(step);
-			}
-			else {
-				//1. exclude from step sets that we use for combining this step 
-				//and belong to world set (i.e. are the entire set)
-
-				for (uint32_t i = 0; i < stepStructure.size(); i++) {
-					const DigitSet & plenty = stepStructure[i].baseIt->plenty;
-					if (plenty.size() == stepStructure[i].size) {	//if set that we use has size the same as its superset
-						DigitSet temp;
-						std::set_difference(step.plenty.cbegin(), step.plenty.cend(), 
-							plenty.cbegin(), plenty.cend(), std::inserter(temp, temp.begin()));
-						step.plenty = temp;
-						step.value -= stepStructure[i].baseIt->value;
-					}
-				}
-
-				residue = step;
-			}
+			//Input: world, step, stepStructure
+			GameSet residue = calculateResidue(world, step, stepStructure);
+			//Output: residue
 
 			//2. Analysing the residue
+
+			if (stepStructure.size() <= 1)	//It means that step is subset of a world's set
+				world.push_back(step);
 
 			if (residue.plenty.size() == residue.value || 0 == residue.value) {
 				DigitSet::const_iterator it;

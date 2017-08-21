@@ -71,6 +71,8 @@ namespace PikiFamsGameBot {
 
 	void combineTheBestStep(const WorldSet& world, StepStructure & stepStructure);
 
+	GameSet calculateResidue(const WorldSet& world, const GameSet& step, const StepStructure& stepStructure);
+
 	//return game step count
 	SolvingInfo solveTheGame(GameCreator game);
 
