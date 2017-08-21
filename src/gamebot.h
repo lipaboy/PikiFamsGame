@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <set>
+#include <unordered_set>
 #include <vector>
 #include <algorithm>
 
@@ -20,6 +21,7 @@ namespace PikiFamsGameBot {
 
 	using std::set;
 	using std::vector;
+	using std::unordered_set;
 
 	using LipaboyLib::CloseInterval;
 	using LipaboyLib::Comparable;
@@ -37,6 +39,7 @@ namespace PikiFamsGameBot {
 		uint32_t value;		//count digits that precense into that set
 	};
 
+	//TODO: or may be use unordered_set??
 	typedef vector<GameSet> WorldSet;
 
 	struct GameSubSet {

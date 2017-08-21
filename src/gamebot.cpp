@@ -20,7 +20,7 @@ namespace PikiFamsGameBot {
 		stepBuild.reserve(4u);
 
 		GameStepInfo info;
-		set<DigitType> stepSet;
+		unordered_set<DigitType> stepSet;
 		Array4Digits appropriateStep;
 		do {
 			stepBuild.clear();
@@ -73,7 +73,6 @@ namespace PikiFamsGameBot {
 			std::copy(appropriateStep.begin(), appropriateStep.end(), 
 				std::ostream_iterator<DigitType>(std::cout, " "));
 			std::cout << ", " << guessedCount << std::endl;
-
 
 			//Analyzing the step
 
