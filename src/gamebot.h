@@ -26,16 +26,20 @@ namespace PikiFamsGameBot {
 
 	using LipaboyLib::CloseInterval;
 	using LipaboyLib::Comparable;
+	
+	//--------------------------Special structs---------------------------//
 
 	typedef CloseInterval<int> PossibleResultInterval;
-	
-	//Special sets
+	//using set instead of unordered_set because in my program plenty has small size. 
+	//It means the access is better than unordered_set's
+	typedef set<DigitType> DigitSet;
 
+	//TODO: may be add typedef for set<DigitType>
 	struct GameSet
 	{
-		GameSet(set<DigitType> _plenty = set<DigitType>(), uint32_t _value = 0)
+		GameSet(const DigitSet& _plenty = DigitSet(), uint32_t _value = 0)
 			: plenty(_plenty), value(_value) {}
-		set<DigitType> plenty;		//using set instead of unordered_set because in my program plenty has small size. It means the access is better than unordered_set's
+		DigitSet plenty;
 		uint32_t value;		//count digits that precense into that set
 	};
 
@@ -49,6 +53,12 @@ namespace PikiFamsGameBot {
 
 	typedef vector<GameSubSet> StepStructure;
 
+	struct SolvingInfo {
+		//set<DigitType> 
+	};
+
+	//--------------------------Functions---------------------------//
+
 	//PossibleResultInterval isn't a real set
 	inline PossibleResultInterval calculatePossibleResultSet(const GameSet& set1, const uint32_t subsetLength) { 
 		return PossibleResultInterval(
@@ -56,6 +66,8 @@ namespace PikiFamsGameBot {
 			std::min<signed int>(set1.value, subsetLength)
 		);
 	}		// Using signed int is justified by correct calculation
+
+
 
 	//return game step count
 	uint32_t solveTheGame(GameCreator game);

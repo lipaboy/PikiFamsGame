@@ -11,7 +11,7 @@ namespace PikiFamsGameBot {
 
 		//Everything starts with entering in cycle
 
-		GameSet digits(set<DigitType>({ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }), stepLength);
+		GameSet digits(DigitSet({ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }), stepLength);
 
 		//TODO: read about reserve and clear: how you can use vector array without reallocation
 		//TODO: think about what be better: vector or list. You need to sort out the array and delete items from it
@@ -19,11 +19,11 @@ namespace PikiFamsGameBot {
 		StepStructure stepBuild;
 		stepBuild.reserve(stepLength);
 
-		GameSet stepSet;
+		GameSet step;
 		DigitArray appropriateStep;
 		do {
 			stepBuild.clear();
-			stepSet.plenty.clear();
+			step.plenty.clear();
 
 			//--------------------------Collect the necessary information----------------------------//
 
@@ -49,22 +49,22 @@ namespace PikiFamsGameBot {
 			//--------------------------Combining the step--------------------------//
 
 			for (uint32_t i = 0; i < stepBuild.size(); i++) {
-				set<DigitType> plenty = stepBuild[i].baseIt->plenty;
-				set<DigitType>::iterator it;
+				DigitSet plenty = stepBuild[i].baseIt->plenty;
+				DigitSet::iterator it;
 				for (uint32_t j = 0; j < stepBuild[i].size; j++) {
 					it = plenty.begin();
 					std::advance(it, rand() % plenty.size());
-					stepSet.plenty.insert(*it);
+					step.plenty.insert(*it);
 					plenty.erase(it);
 				}
 			}
 
 			//--------------------------Try to guess--------------------------//
 
-			std::copy(stepSet.plenty.cbegin(), stepSet.plenty.cend(), appropriateStep.begin());
+			std::copy(step.plenty.cbegin(), step.plenty.cend(), appropriateStep.begin());
 			GameStepInfo info = game.guess(appropriateStep);
-			stepSet.value = info.fams + info.piki;
-			if (stepSet.value >= stepLength)
+			step.value = info.fams + info.piki;
+			if (step.value >= stepLength)
 				break;
 
 			//Output
@@ -72,7 +72,7 @@ namespace PikiFamsGameBot {
 			std::cout << "Guess number: ";
 			std::copy(appropriateStep.begin(), appropriateStep.end(),
 				std::ostream_iterator<DigitType>(std::cout, " "));
-			std::cout << ", " << stepSet.value << std::endl;
+			std::cout << ", " << step.value << std::endl;
 
 			//--------------------------Analyzing the step--------------------------//
 
@@ -80,41 +80,41 @@ namespace PikiFamsGameBot {
 
 			//Works only at beginning two steps
 			if (stepBuild.size() <= 1) {
-				//1. Exclude from superset the stepSet to get residue
-				const set<DigitType> & plenty = stepBuild[0].baseIt -> plenty;
-				set<DigitType> temp;
+				//1. Exclude from superset the step to get residue
+				const DigitSet & plenty = stepBuild[0].baseIt -> plenty;
+				DigitSet temp;
 				std::set_difference(plenty.cbegin(), plenty.cend(), 
-					stepSet.plenty.cbegin(), stepSet.plenty.cend(), 
+					step.plenty.cbegin(), step.plenty.cend(), 
 					std::inserter(temp, temp.begin()));
 
 				residue.plenty = temp;
-				residue.value = stepBuild[0].baseIt->value - stepSet.value;
-				world.push_back(stepSet);
+				residue.value = stepBuild[0].baseIt->value - step.value;
+				world.push_back(step);
 			}
 			else {
-				//1. exclude from stepSet sets that we use for combining this step 
+				//1. exclude from step sets that we use for combining this step 
 				//and belong to world set (i.e. are the entire set)
 
 				for (uint32_t i = 0; i < stepBuild.size(); i++) {
-					const set<DigitType> & plenty = stepBuild[i].baseIt->plenty;
+					const DigitSet & plenty = stepBuild[i].baseIt->plenty;
 					if (plenty.size() == stepBuild[i].size) {	//if set that we use has size the same as its superset
-						set<DigitType> temp;
-						std::set_difference(stepSet.plenty.cbegin(), stepSet.plenty.cend(), 
+						DigitSet temp;
+						std::set_difference(step.plenty.cbegin(), step.plenty.cend(), 
 							plenty.cbegin(), plenty.cend(), std::inserter(temp, temp.begin()));
-						stepSet.plenty = temp;
-						stepSet.value -= stepBuild[i].baseIt->value;
+						step.plenty = temp;
+						step.value -= stepBuild[i].baseIt->value;
 					}
 				}
 
-				residue = stepSet;
+				residue = step;
 			}
 
 			//2. Analysing the residue
 
 			if (residue.plenty.size() == residue.value || 0 == residue.value) {
-				set<DigitType>::iterator it;
+				DigitSet::iterator it;
 				for (it = residue.plenty.cbegin(); it != residue.plenty.cend(); it++) {
-					world.emplace_back(set<DigitType>({ *it }), 
+					world.emplace_back(DigitSet({ *it }),
 						(residue.value > 0u));	//every set has value 1 (if set.size == value),
 											//or 0 (if set.size == 0)
 				}
