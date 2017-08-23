@@ -13,15 +13,26 @@ int main(void) {
 	GameCreator game({ 1, 2, 3, 4 });
 	GameCreator game2;
 
-	//GameStepInfo info = game.guess({ 1, 0, 4, 9 });
+    //--------------------Game Bot Try----------------------------//
 
-	solveTheGame(game);
-
-	//PossibleResultInterval pos =
-	//	calculatePossibleResultSet(GameSet(set<DigitType>({ 0, 1, 2 }), 2u), 2u);
-	//cout << pos.left() << " " << pos.right() << endl;
+    //solveTheGame(game);
 
 	//cout << info.piki << "piki " << info.fams << "fams" << endl;
+
+    //--------------------User mode----------------------------//
+
+    DigitArray userStep;
+    for ( ; ; ) {
+        cout << "Enter the number: ";
+        DigitArray::iterator it;
+        for (it = userStep.begin(); it != userStep.end(); it++) {
+            std::cin >> *it;
+        }
+        GameStepInfo info = game2.guess(userStep);
+        cout << info.piki << "p " << info.fams << "f " << endl;
+        if (info.piki >= 4 || userStep[0] == userStep[1])
+            break;
+    }
 
 	return 0;
 }
