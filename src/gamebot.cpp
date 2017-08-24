@@ -38,10 +38,44 @@ namespace PikiFamsGameBot {
 
 					//Sum of subset length = stepLength
 					
-					//Variants of subset length = { <1, 3>; <2, 2>; <3, 1> }
+					//Variants of subset length = { <1, 3>; <2, 2>; <3, 1> } ~ <iIt, jIt>
 
 					//PossibleResultInterval posResSet13 = calculatePossibleResultSet(*it, stepLength);
 					//You need to check each set length (3 can be a lot)
+
+					// <1, 3>
+					if (jIt->plenty.size() >= 3) {
+						PossibleResultInterval posResSet13 = 
+							calculatePossibleResultSet(*iIt, 1, *jIt, 3);
+						int combinationCount = posResSet13.right() - posResSet13.left();
+						if (combinationCount > 1 && combinationCount < minLength) {
+							stepStructure[0] = { iIt, 1 };
+							stepStructure[1] = { jIt, 3 };
+							minLength = combinationCount;
+						}
+					}
+					// <2, 2>
+					if (iIt->plenty.size() >= 2 && jIt->plenty.size() >= 2) {
+						PossibleResultInterval posResSet22 =
+							calculatePossibleResultSet(*iIt, 2, *jIt, 2);
+						int combinationCount = posResSet22.right() - posResSet22.left();
+						if (combinationCount > 1 && combinationCount < minLength) {
+							stepStructure[0] = { iIt, 2 };
+							stepStructure[1] = { jIt, 2 };
+							minLength = combinationCount;
+						}
+					}
+					// <3, 1>
+					if (iIt->plenty.size() >= 3 && jIt->plenty.size() >= 1) {
+						PossibleResultInterval posResSet31 =
+							calculatePossibleResultSet(*iIt, 3, *jIt, 1);
+						int combinationCount = posResSet31.right() - posResSet31.left();
+						if (combinationCount > 1 && combinationCount < minLength) {
+							stepStructure[0] = { iIt, 3 };
+							stepStructure[1] = { jIt, 1 };
+							minLength = combinationCount;
+						}
+					}
 				}
 			}
 		}

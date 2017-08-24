@@ -22,6 +22,8 @@ TEST(TestInterval, operatorEqual) {
 	ASSERT_EQ(interval1 == interval2, true);
 }
 
+/*---calculatePossibleResultSet---*/
+
 class TestCalculatePossibleResultSet_QuatroSet : public ::testing::Test {
 protected:
 	bool check_QuatroSet(int subsetLength, const PossibleResultInterval& interval) {
