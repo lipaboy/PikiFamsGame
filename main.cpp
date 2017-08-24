@@ -1,13 +1,13 @@
 #include <iostream>
 
-#define TEST_MODE
+//#define TEST_MODE
 
 #ifdef TEST_MODE
-#include "Test_hd.h"
+#include "tests\Test_hd.h"
 
 #else
-#include "GameCreator.h"
-#include "gamebot.h"
+#include "src\GameCreator.h"
+#include "src\gamebot.h"
 
 using namespace PikiFamsGame;
 using namespace PikiFamsGameBot;
