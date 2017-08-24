@@ -1,6 +1,6 @@
 #include <iostream>
 
-//#define TEST_MODE
+#define TEST_MODE
 
 #ifdef TEST_MODE
 #include "tests\Test_hd.h"

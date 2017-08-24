@@ -31,6 +31,12 @@ namespace PikiFamsGameBot {
 	//--------------------------Special structs---------------------------//
 
 	typedef CloseInterval<int> PossibleResultInterval;
+
+	inline PossibleResultInterval operator+(const PossibleResultInterval& first,
+											const PossibleResultInterval& second) {
+		return PossibleResultInterval(first.left() + second.left(), first.right() + second.right());
+	}
+
 	//using set instead of unordered_set because in my program plenty has small size. 
 	//It means the access is better than unordered_set's
 	typedef set<DigitType> DigitSet;
@@ -62,12 +68,22 @@ namespace PikiFamsGameBot {
 	//--------------------------Functions---------------------------//
 
 	//PossibleResultInterval isn't a real set
-	inline PossibleResultInterval calculatePossibleResultSet(const GameSet& set1, const uint32_t subsetLength) { 
+	inline PossibleResultInterval calculatePossibleResultSet(const GameSet& set1, 
+															 const uint32_t subsetLength) { 
 		return PossibleResultInterval(
 			std::max<signed int>(0, static_cast<signed int>(set1.value - (set1.plenty.size() - subsetLength))),
 			std::min<signed int>(set1.value, subsetLength)
 		);
 	}		// Using signed int is justified by correct calculation
+
+	template <class... Args>
+	inline PossibleResultInterval calculatePossibleResultSet(const GameSet& set1,
+															 const uint32_t subsetLength, Args... args) {
+		return calculatePossibleResultSet(set1, subsetLength) + calculatePossibleResultSet2(args...);
+	}
+
+	//template <class... Args>
+	//bool containsAll(T element, Args... args) { return contains(element) && containsAll(args...); }
 
 	void combineTheBestStep(const WorldSet& world, StepStructure & stepStructure);
 
