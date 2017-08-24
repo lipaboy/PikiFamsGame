@@ -6,20 +6,22 @@
 namespace PikiFamsGameBot {
 
 	//TODO: replace WorldSet on any_range (only reading the world container)
-	void combineTheBestStep(const WorldSet & world, StepStructure & stepStructure) {
+	void combineTheBestStep(const WorldSet & world, StepStructure & stepStructure) 
+	{
+		int minLength = INT_MAX;		//2 - it is our valid minimum (not 1)
+
+		stepStructure.resize(2u);
+
 		//1. Sort out the one-set sets
 
-		stepStructure.resize(1u);
 		stepStructure[0].size = stepLength;
-
-		WorldSet::const_iterator it;
-		int minLength = INT_MAX;		//2 - it is our minimum (not 1)
-		for (it = world.cbegin(); it != world.cend(); it++) {
+		for (WorldSet::const_iterator it = world.cbegin(); it != world.cend(); it++) {
 			if (it->plenty.size() > stepLength) {	//size == stepLength - is useless because we will know nothing new about that set
 				PossibleResultInterval posResSet = calculatePossibleResultSet(*it, stepLength);
 				//signed int for unpredictable behavior
 				int combinationCount = posResSet.right() - posResSet.left();	
 						//My criterion for selection best step
+				//TODO: create the criterion-lambda function
 				if (combinationCount > 1 && combinationCount < minLength) {
 					stepStructure[0].baseIt = it;
 					minLength = combinationCount;
@@ -27,7 +29,23 @@ namespace PikiFamsGameBot {
 			}
 		}
 
-		//"return stepStructure"
+		//2. Sort out the two-set sets
+
+		if (!world.empty()) {
+			for (WorldSet::const_iterator iIt = world.cbegin(); (iIt + 1) != world.cend(); iIt++) {
+				for (WorldSet::const_iterator jIt = iIt + 1; jIt != world.cend(); jIt++) {
+					//We have two sets: *iIt, *jIt
+
+					//Sum of subset length = stepLength
+					
+					//Variants of subset length = { <1, 3>; <2, 2>; <3, 1> }
+
+					//PossibleResultInterval posResSet13 = calculatePossibleResultSet(*it, stepLength);
+				}
+			}
+		}
+
+		//Function Output: stepStructure
 	}
 
 	GameSet calculateResidue(const WorldSet & world, const GameSet & step, 
