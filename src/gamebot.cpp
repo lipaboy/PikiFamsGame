@@ -142,9 +142,11 @@ namespace PikiFamsGameBot {
 
 			//--------------------------Analyzing the step--------------------------//
 
+			//TODO: Test it
 			//1. Calculate the residue
 			GameSet residue = calculateResidue(world, step, stepStructure);
 
+			//TODO: Test it
 			//2. Analysing the residue or update the world
 			updateWorld(world, step, stepStructure, residue);
 
