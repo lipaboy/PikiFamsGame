@@ -30,7 +30,8 @@ namespace PikiFamsGameBot {
 		//"return stepStructure"
 	}
 
-	GameSet calculateResidue(const WorldSet & world, const GameSet & step, const StepStructure& stepStructure)
+	GameSet calculateResidue(const WorldSet & world, const GameSet & step, 
+		const StepStructure& stepStructure)
 	{
 		GameSet residue;
 

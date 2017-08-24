@@ -5,10 +5,11 @@
 
 #include <set>
 
-using PikiFamsGameBot::GameSet;
-using PikiFamsGameBot::calculatePossibleResultSet;
 using std::set;
-//using LipaboyLib::Interval;
+
+using PikiFamsGameBot::GameSet;
+
+using PikiFamsGameBot::calculatePossibleResultSet;
 using PikiFamsGameBot::PossibleResultInterval;
 
 using namespace LipaboyLib;
