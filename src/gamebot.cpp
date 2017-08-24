@@ -1,6 +1,7 @@
 #include "gamebot.h"
 
 #include <ctime>
+#include <limits.h>
 
 namespace PikiFamsGameBot {
 
