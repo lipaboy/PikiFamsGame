@@ -79,7 +79,7 @@ namespace PikiFamsGameBot {
 	template <class... Args>
 	inline PossibleResultInterval calculatePossibleResultSet(const GameSet& set1,
 															 const uint32_t subsetLength, Args... args) {
-		return calculatePossibleResultSet(set1, subsetLength) + calculatePossibleResultSet2(args...);
+		return calculatePossibleResultSet(set1, subsetLength) + calculatePossibleResultSet(args...);
 	}
 
 	//template <class... Args>

@@ -41,6 +41,7 @@ namespace PikiFamsGameBot {
 					//Variants of subset length = { <1, 3>; <2, 2>; <3, 1> }
 
 					//PossibleResultInterval posResSet13 = calculatePossibleResultSet(*it, stepLength);
+					//You need to check each set length (3 can be a lot)
 				}
 			}
 		}

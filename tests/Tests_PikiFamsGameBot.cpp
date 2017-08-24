@@ -14,9 +14,13 @@ using PikiFamsGameBot::PossibleResultInterval;
 
 using namespace LipaboyLib;
 
-//TODO: add TEST_VALUE
+/*---For intervals---*/
 
-//TODO: add class for these tests
+TEST(TestInterval, operatorEqual) {
+	Interval<int, std::less<int>, std::less<int> > interval1(0, 1);
+	Interval<int, std::less<int>, std::less<int> > interval2(0, 1);
+	ASSERT_EQ(interval1 == interval2, true);
+}
 
 class TestCalculatePossibleResultSet_QuatroSet : public ::testing::Test {
 protected:
@@ -45,10 +49,22 @@ TEST_F(TestCalculatePossibleResultSet_QuatroSet, fourth) {
 }
 
 
-/*---For intervals---*/
+class TestCalculatePossibleResultSet_TwoSets : public ::testing::Test {
+protected:
+	bool check_TwoSets(int firstLen, int secondLen, const PossibleResultInterval& interval) {
+		return (calculatePossibleResultSet(first, firstLen, second, secondLen) == interval);
+	}
 
-TEST(TestInterval, operatorEqual) {
-	Interval<int, std::less<int>, std::less<int> > interval1(0, 1);
-	Interval<int, std::less<int>, std::less<int> > interval2(0, 1);
-	ASSERT_EQ(interval1 == interval2, true);
+protected:
+	GameSet first = GameSet(set<uint32_t>({ 5, 6, 7, 8 }), 1);
+	GameSet second = GameSet(set<uint32_t>({ 0, 9 }), 1);
+};
+
+TEST_F(TestCalculatePossibleResultSet_TwoSets, first) {
+	ASSERT_TRUE(check_TwoSets(2, 2, PossibleResultInterval(1, 2)));
 }
+
+TEST_F(TestCalculatePossibleResultSet_TwoSets, second) {
+	ASSERT_TRUE(check_TwoSets(3, 1, PossibleResultInterval(0, 2)));
+}
+
