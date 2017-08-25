@@ -99,7 +99,7 @@ namespace PikiFamsGameBot {
 		GameSet residue;
 
 		//Works only at beginning two steps
-		if (stepStructure.size() <= 1) {	//It means that step is subset of a world's set
+		if (stepStructure.size() == 1) {	//It means that step is subset of a world's set
 			//1. Exclude from superset the step to get residue
 			const DigitSet & plenty = stepStructure[0].baseIt->plenty;
 			DigitSet temp;
@@ -130,11 +130,11 @@ namespace PikiFamsGameBot {
 
 		return residue;
 	}
-
+	//TODO: may updateWorld and calculateResidue must be together
 	void updateWorld(WorldSet & world, const GameSet & step, const StepStructure & stepStructure, 
-		const GameSet & residue)
+		const GameSet & residue)	//why residue it is only one set?
 	{
-		if (stepStructure.size() <= 1)	//It means that step is subset of a world's set
+		if (stepStructure.size() == 1)	//It means that step is subset of a world's set
 			world.push_back(step);
 
 		if (residue.plenty.size() == residue.value || 0 == residue.value) {

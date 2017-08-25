@@ -46,6 +46,12 @@ namespace PikiFamsGameBot {
 	{
 		GameSet(const DigitSet& _plenty = DigitSet(), uint32_t _value = 0)
 			: plenty(_plenty), value(_value) {}
+
+		bool operator== (const GameSet& other) const {
+			return (value == other.value)
+				&& (plenty == other.plenty);
+		}
+
 		DigitSet plenty;
 		uint32_t value;		//count digits that precense into that set
 	};
