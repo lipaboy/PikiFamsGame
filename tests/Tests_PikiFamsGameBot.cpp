@@ -70,3 +70,8 @@ TEST_F(TestCalculatePossibleResultSet_TwoSets, second) {
 	ASSERT_TRUE(check_TwoSets(3, 1, PossibleResultInterval(0, 2)));
 }
 
+TEST(TestCalculatePossibleResultSet_TwoSets2, third) {
+	EXPECT_TRUE(calculatePossibleResultSet(GameSet(set<uint32_t>({ 5, 6, 7, 8 }), 1),
+		3, GameSet(set<uint32_t>({ 1, 2, 3, 4 }), 2), 1) == PossibleResultInterval(0, 2));
+}
+

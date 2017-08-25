@@ -8,21 +8,21 @@ namespace PikiFamsGameBot {
 	//TODO: replace WorldSet on any_range (only reading the world container)
 	void combineTheBestStep(const WorldSet & world, StepStructure & stepStructure) 
 	{
-		int minLength = INT_MAX;		//2 - it is our valid minimum (not 1)
+		int minLength = INT_MAX;		//1 - it is our valid minimum (not 0)
 
-		stepStructure.resize(2u);
+		stepStructure.resize(1u);
 
 		//1. Sort out the one-set sets
 
 		stepStructure[0].size = stepLength;
-		for (WorldSet::const_iterator it = world.cbegin(); it != world.cend(); it++) {
+		for (WorldSetIterator it = world.cbegin(); it != world.cend(); it++) {
 			if (it->plenty.size() > stepLength) {	//size == stepLength - is useless because we will know nothing new about that set
 				PossibleResultInterval posResSet = calculatePossibleResultSet(*it, stepLength);
 				//signed int for unpredictable behavior
 				int combinationCount = posResSet.right() - posResSet.left();	
 						//My criterion for selection best step
 				//TODO: create the criterion-lambda function
-				if (combinationCount > 1 && combinationCount < minLength) {
+				if (combinationCount > 0 && combinationCount < minLength) {
 					stepStructure[0].baseIt = it;
 					minLength = combinationCount;
 				}
@@ -32,8 +32,11 @@ namespace PikiFamsGameBot {
 		//2. Sort out the two-set sets
 
 		if (!world.empty()) {
-			for (WorldSet::const_iterator iIt = world.cbegin(); (iIt + 1) != world.cend(); iIt++) {
-				for (WorldSet::const_iterator jIt = iIt + 1; jIt != world.cend(); jIt++) {
+			bool flagFindNew = false;
+			stepStructure.resize(2u);
+
+			for (WorldSetIterator iIt = world.cbegin(); (iIt + 1) != world.cend(); iIt++) {
+				for (WorldSetIterator jIt = iIt + 1; jIt != world.cend(); jIt++) {
 					//We have two sets: *iIt, *jIt
 
 					//Sum of subset length = stepLength
@@ -48,10 +51,11 @@ namespace PikiFamsGameBot {
 						PossibleResultInterval posResSet13 = 
 							calculatePossibleResultSet(*iIt, 1, *jIt, 3);
 						int combinationCount = posResSet13.right() - posResSet13.left();
-						if (combinationCount > 1 && combinationCount < minLength) {
+						if (combinationCount > 0 && combinationCount < minLength) {
 							stepStructure[0] = { iIt, 1 };
 							stepStructure[1] = { jIt, 3 };
 							minLength = combinationCount;
+							flagFindNew = true;
 						}
 					}
 					// <2, 2>
@@ -59,10 +63,13 @@ namespace PikiFamsGameBot {
 						PossibleResultInterval posResSet22 =
 							calculatePossibleResultSet(*iIt, 2, *jIt, 2);
 						int combinationCount = posResSet22.right() - posResSet22.left();
-						if (combinationCount > 1 && combinationCount < minLength) {
+						//if (combinationCount == 2)
+						//	std::cout << "smth debug" << std::endl;
+						if (combinationCount > 0 && combinationCount < minLength) {
 							stepStructure[0] = { iIt, 2 };
 							stepStructure[1] = { jIt, 2 };
 							minLength = combinationCount;
+							flagFindNew = true;
 						}
 					}
 					// <3, 1>
@@ -70,14 +77,17 @@ namespace PikiFamsGameBot {
 						PossibleResultInterval posResSet31 =
 							calculatePossibleResultSet(*iIt, 3, *jIt, 1);
 						int combinationCount = posResSet31.right() - posResSet31.left();
-						if (combinationCount > 1 && combinationCount < minLength) {
+						if (combinationCount > 0 && combinationCount < minLength) {
 							stepStructure[0] = { iIt, 3 };
 							stepStructure[1] = { jIt, 1 };
 							minLength = combinationCount;
+							flagFindNew = true;
 						}
 					}
 				}
 			}
+			if (!flagFindNew)
+				stepStructure.resize(1u);
 		}
 
 		//Function Output: stepStructure

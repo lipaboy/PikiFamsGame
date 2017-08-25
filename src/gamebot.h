@@ -53,9 +53,9 @@ namespace PikiFamsGameBot {
 	//TODO: or may be use unordered_set??
 	//Some tests may be work wrong because they use information that WorldSet is vector
 	typedef vector<GameSet> WorldSet;
-
+	typedef WorldSet::const_iterator WorldSetIterator;
 	struct GameSubSet {
-		WorldSet::const_iterator baseIt;
+		WorldSetIterator baseIt;
 		uint32_t size;
 	};
 
