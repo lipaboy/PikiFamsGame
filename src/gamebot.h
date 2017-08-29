@@ -51,6 +51,8 @@ namespace PikiFamsGameBot {
 			return (value == other.value)
 				&& (plenty == other.plenty);
 		}
+		//TODO: routine, you need every override operator== write operator!= through operator==
+		bool operator!= (const GameSet& other) const { return !(other == (*this)); }
 
 		DigitSet plenty;
 		uint32_t value;		//count digits that precense into that set
@@ -94,11 +96,11 @@ namespace PikiFamsGameBot {
 
 	void combineTheBestStep(const WorldSet& world, StepStructure & stepStructure);
 
-	GameSet calculateResidue(const WorldSet& world, const GameSet& step, 
-		const StepStructure& stepStructure);
+	/*GameSet calculateResidue(const WorldSet& world, const GameSet& step, 
+		const StepStructure& stepStructure);*/
 
 	void updateWorld(WorldSet& world, const GameSet& step, 
-		const StepStructure& stepStructure, const GameSet& residue);
+		const StepStructure& stepStructure);
 
 	//return game step count
 	SolvingInfo solveTheGame(GameCreator game);

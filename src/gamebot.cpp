@@ -93,14 +93,16 @@ namespace PikiFamsGameBot {
 		//Function Output: stepStructure
 	}
 
-	GameSet calculateResidue(const WorldSet & world, const GameSet & step, 
-		const StepStructure& stepStructure)
+	//TODO: may updateWorld and calculateResidue must be together
+	void updateWorld(WorldSet & world, const GameSet & step, const StepStructure & stepStructure)	
 	{
-		GameSet residue;
+		GameSet residue;		//why residue it is only one set?
+
+		//-------------Calculate residue-------------//
 
 		//Works only at beginning two steps
 		if (stepStructure.size() == 1) {	//It means that step is subset of a world's set
-			//1. Exclude from superset the step to get residue
+											//1. Exclude from superset the step to get residue
 			const DigitSet & plenty = stepStructure[0].baseIt->plenty;
 			DigitSet temp;
 			std::set_difference(plenty.cbegin(), plenty.cend(),
@@ -109,7 +111,8 @@ namespace PikiFamsGameBot {
 
 			residue.plenty = temp;
 			residue.value = stepStructure[0].baseIt->value - step.value;
-			//world.push_back(step);
+			world.push_back(step);
+			//world.
 		}
 		else {
 			//1. exclude from step sets that we use for combining this step 
@@ -128,14 +131,10 @@ namespace PikiFamsGameBot {
 			}
 		}
 
-		return residue;
-	}
-	//TODO: may updateWorld and calculateResidue must be together
-	void updateWorld(WorldSet & world, const GameSet & step, const StepStructure & stepStructure, 
-		const GameSet & residue)	//why residue it is only one set?
-	{
-		if (stepStructure.size() == 1)	//It means that step is subset of a world's set
-			world.push_back(step);
+		//------------------Updating the world-----------------//
+
+		//if (stepStructure.size() == 1)	//It means that step is subset of a world's set
+		//	world.push_back(step);
 
 		if (residue.plenty.size() == residue.value || 0 == residue.value) {
 			DigitSet::const_iterator it;
@@ -209,11 +208,11 @@ namespace PikiFamsGameBot {
 
 			//TODO: Test it
 			//1. Calculate the residue
-			GameSet residue = calculateResidue(world, step, stepStructure);
+			//GameSet residue = calculateResidue(world, step, stepStructure);
 
 			//TODO: Test it
 			//2. Analysing the residue or update the world
-			updateWorld(world, step, stepStructure, residue);
+			updateWorld(world, step, stepStructure);
 
 		} while (0 == 1);
 

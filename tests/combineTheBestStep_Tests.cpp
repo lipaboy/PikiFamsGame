@@ -2,7 +2,7 @@
 
 #include <unordered_set>
 #include <set>
-//#include <set_mu>
+#include <algorithm>
 #include <iostream>
 
 #include "..\src\gamebot.h"
@@ -55,17 +55,17 @@ TEST(TestCombineTheBestStep, thirdStep) {
 	;
 }
 
-using PikiFamsGameBot::calculateResidue;
+//using PikiFamsGameBot::calculateResidue;
 
-TEST(TestCalculateResidue, firstStep) {
-	WorldSet world({
-		GameSet({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 }, 4)
-	});
-	GameSet step({ 1, 2, 3, 4 }, 2);
-	StepStructure stepStruct;
-	stepStruct.push_back({ world.begin(), 4 });
-	EXPECT_TRUE(GameSet({ 5, 6, 7, 8, 9, 0 }, 2) == calculateResidue(world, step, stepStruct));
-}
+//TEST(TestCalculateResidue, firstStep) {
+//	WorldSet world({
+//		GameSet({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 }, 4)
+//	});
+//	GameSet step({ 1, 2, 3, 4 }, 2);
+//	StepStructure stepStruct;
+//	stepStruct.push_back({ world.begin(), 4 });
+//	EXPECT_TRUE(GameSet({ 5, 6, 7, 8, 9, 0 }, 2) == calculateResidue(world, step, stepStruct));
+//}
 
 using PikiFamsGameBot::updateWorld;
 
@@ -76,9 +76,14 @@ TEST(TestUpdateWorld, firstStep) {
 	GameSet step({ 1, 2, 3, 4 }, 2);
 	StepStructure stepStruct;
 	stepStruct.push_back({ world.begin(), 4 });
-	GameSet residue = calculateResidue(world, step, stepStruct);
-	updateWorld(world, step, stepStruct, residue)
-	EXPECT_TRUE( );
+	updateWorld(world, step, stepStruct);
+	WorldSet worldExpected({
+		GameSet({1, 2, 3, 4}, 2),
+		GameSet({5, 6, 7, 8, 9, 0}, 2)
+	});
+	EXPECT_TRUE(world.size() == worldExpected.size() 
+		//&&	std::equal(world.begin(), world.end(), worldExpected.begin())
+	);
 }
 
 

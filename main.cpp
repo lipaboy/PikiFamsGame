@@ -1,16 +1,22 @@
 #include <iostream>
 
 #define TEST_MODE
+//#define LIPABOY_MODE
 
 #ifdef TEST_MODE
 #include "tests\Test_hd.h"
+#else
 
+#ifdef LIPABOY_MODE
+#include "src\lipaboyLibrary\src\lipaboy_test.h"
 #else
 #include "src\GameCreator.h"
 #include "src\gamebot.h"
 
 using namespace PikiFamsGame;
 using namespace PikiFamsGameBot;
+#endif
+
 #endif
 
 
@@ -23,6 +29,9 @@ int main(int argc, char *argv[])
 	RUN_ALL_TESTS();
 #else
 
+#ifdef LIPABOY_MODE
+	LipaboyLib::lipaboyMain();
+#else
 	using std::cout;
 	using std::endl;
 
@@ -49,6 +58,8 @@ int main(int argc, char *argv[])
 		if (info.piki >= 4 || userStep[0] == userStep[1])
 			break;
 	}
+
+#endif
 
 #endif
 
