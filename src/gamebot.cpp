@@ -111,8 +111,6 @@ namespace PikiFamsGameBot {
 
 			residue.plenty = temp;
 			residue.value = stepStructure[0].baseIt->value - step.value;
-			world.push_back(step);
-			//world.
 		}
 		else {
 			//1. exclude from step sets that we use for combining this step 
@@ -133,8 +131,14 @@ namespace PikiFamsGameBot {
 
 		//------------------Updating the world-----------------//
 
-		//if (stepStructure.size() == 1)	//It means that step is subset of a world's set
-		//	world.push_back(step);
+		if (stepStructure.size() == 1)	//It means that step is subset of a world's set
+		{
+			WorldSet::iterator it = world.begin();
+			WorldSetIterator cit = stepStructure[0].baseIt;
+			std::advance(it, std::distance<WorldSet::const_iterator>(world.cbegin(), cit));
+			*it = residue;
+			world.push_back(step);
+		}
 
 		if (residue.plenty.size() == residue.value || 0 == residue.value) {
 			DigitSet::const_iterator it;
@@ -144,7 +148,7 @@ namespace PikiFamsGameBot {
 											//or 0 (if set.size == 0)
 		}
 		else {
-			world.push_back(residue);	//?????
+			//world.push_back(residue);	//?????
 		}
 	}
 

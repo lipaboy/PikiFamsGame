@@ -58,10 +58,9 @@ namespace PikiFamsGameBot {
 		uint32_t value;		//count digits that precense into that set
 	};
 
-	//TODO: or may be use unordered_set??
-	//Some tests may be work wrong because they use information that WorldSet is vector
 	typedef vector<GameSet> WorldSet;
-	typedef WorldSet::const_iterator WorldSetIterator;
+	//TODO: replace const_iterator on iterator
+	using WorldSetIterator = WorldSet::const_iterator;
 	struct GameSubSet {
 		WorldSetIterator baseIt;
 		uint32_t size;

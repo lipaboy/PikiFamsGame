@@ -68,6 +68,7 @@ TEST(TestCombineTheBestStep, thirdStep) {
 //}
 
 using PikiFamsGameBot::updateWorld;
+using PikiFamsGameBot::DigitSet;
 
 TEST(TestUpdateWorld, firstStep) {
 	WorldSet world({
@@ -81,9 +82,16 @@ TEST(TestUpdateWorld, firstStep) {
 		GameSet({1, 2, 3, 4}, 2),
 		GameSet({5, 6, 7, 8, 9, 0}, 2)
 	});
-	EXPECT_TRUE(world.size() == worldExpected.size() 
-		//&&	std::equal(world.begin(), world.end(), worldExpected.begin())
-	);
+	EXPECT_TRUE(world.size() == worldExpected.size());
+
+	for (WorldSetIterator it = world.cbegin(); it != world.cend(); it++) {
+		for (WorldSet::iterator it2 = worldExpected.begin(); it2 != worldExpected.end(); it2++) {
+			if (*it == *it2) {
+				it2->plenty.clear();
+				break;
+			}
+		}
+	}
 }
 
 
