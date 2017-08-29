@@ -39,49 +39,50 @@ namespace PikiFamsGameBot {
 				for (WorldSetIterator jIt = iIt + 1; jIt != world.cend(); jIt++) {
 					//We have two sets: *iIt, *jIt
 
-					//Sum of subset length = stepLength
-					
-					//Variants of subset length = { <1, 3>; <2, 2>; <3, 1> } ~ <iIt, jIt>
+					//else - is useless because we will know nothing new about these sets
+					if (iIt->plenty.size() + jIt->plenty.size() > stepLength) {
 
-					//PossibleResultInterval posResSet13 = calculatePossibleResultSet(*it, stepLength);
-					//You need to check each set length (3 can be a lot)
+						//Sum of subset length = stepLength
 
-					// <1, 3>
-					if (jIt->plenty.size() >= 3) {
-						PossibleResultInterval posResSet13 = 
-							calculatePossibleResultSet(*iIt, 1, *jIt, 3);
-						int combinationCount = posResSet13.right() - posResSet13.left();
-						if (combinationCount > 0 && combinationCount < minLength) {
-							stepStructure[0] = { iIt, 1 };
-							stepStructure[1] = { jIt, 3 };
-							minLength = combinationCount;
-							flagFindNew = true;
+						//Variants of subset length = { <1, 3>; <2, 2>; <3, 1> } ~ <iIt, jIt>
+
+						// <1, 3>
+						if (jIt->plenty.size() >= 3) {
+							PossibleResultInterval posResSet13 =
+								calculatePossibleResultSet(*iIt, 1, *jIt, 3);
+							int combinationCount = posResSet13.right() - posResSet13.left();
+							if (combinationCount > 0 && combinationCount < minLength) {
+								stepStructure[0] = { iIt, 1 };
+								stepStructure[1] = { jIt, 3 };
+								minLength = combinationCount;
+								flagFindNew = true;
+							}
 						}
-					}
-					// <2, 2>
-					if (iIt->plenty.size() >= 2 && jIt->plenty.size() >= 2) {
-						PossibleResultInterval posResSet22 =
-							calculatePossibleResultSet(*iIt, 2, *jIt, 2);
-						int combinationCount = posResSet22.right() - posResSet22.left();
-						//if (combinationCount == 2)
-						//	std::cout << "smth debug" << std::endl;
-						if (combinationCount > 0 && combinationCount < minLength) {
-							stepStructure[0] = { iIt, 2 };
-							stepStructure[1] = { jIt, 2 };
-							minLength = combinationCount;
-							flagFindNew = true;
+						// <2, 2>
+						if (iIt->plenty.size() >= 2 && jIt->plenty.size() >= 2) {
+							PossibleResultInterval posResSet22 =
+								calculatePossibleResultSet(*iIt, 2, *jIt, 2);
+							int combinationCount = posResSet22.right() - posResSet22.left();
+							//if (combinationCount == 2)
+							//	std::cout << "smth debug" << std::endl;
+							if (combinationCount > 0 && combinationCount < minLength) {
+								stepStructure[0] = { iIt, 2 };
+								stepStructure[1] = { jIt, 2 };
+								minLength = combinationCount;
+								flagFindNew = true;
+							}
 						}
-					}
-					// <3, 1>
-					if (iIt->plenty.size() >= 3 && jIt->plenty.size() >= 1) {
-						PossibleResultInterval posResSet31 =
-							calculatePossibleResultSet(*iIt, 3, *jIt, 1);
-						int combinationCount = posResSet31.right() - posResSet31.left();
-						if (combinationCount > 0 && combinationCount < minLength) {
-							stepStructure[0] = { iIt, 3 };
-							stepStructure[1] = { jIt, 1 };
-							minLength = combinationCount;
-							flagFindNew = true;
+						// <3, 1>
+						if (iIt->plenty.size() >= 3 && jIt->plenty.size() >= 1) {
+							PossibleResultInterval posResSet31 =
+								calculatePossibleResultSet(*iIt, 3, *jIt, 1);
+							int combinationCount = posResSet31.right() - posResSet31.left();
+							if (combinationCount > 0 && combinationCount < minLength) {
+								stepStructure[0] = { iIt, 3 };
+								stepStructure[1] = { jIt, 1 };
+								minLength = combinationCount;
+								flagFindNew = true;
+							}
 						}
 					}
 				}
@@ -97,6 +98,7 @@ namespace PikiFamsGameBot {
 	void updateWorld(WorldSet & world, const GameSet & step, const StepStructure & stepStructure)	
 	{
 		GameSet residue;		//why residue it is only one set?
+		StepStructure stepRelations = stepStructure;	//it is relation between residue and lost stepStructure
 
 		//-------------Calculate residue-------------//
 
@@ -125,6 +127,8 @@ namespace PikiFamsGameBot {
 						plenty.cbegin(), plenty.cend(), std::inserter(temp, temp.begin()));
 					residue.plenty = temp;
 					residue.value -= stepStructure[i].baseIt->value;
+
+					stepRelations.erase(stepRelations.begin() + i);
 				}
 			}
 		}
@@ -134,10 +138,10 @@ namespace PikiFamsGameBot {
 		if (stepStructure.size() == 1)	//It means that step is subset of a world's set
 		{
 			WorldSet::iterator it = world.begin();
-			WorldSetIterator cit = stepStructure[0].baseIt;
-			std::advance(it, std::distance<WorldSet::const_iterator>(world.cbegin(), cit));
+			std::advance(it, 
+				std::distance<WorldSet::const_iterator>(world.cbegin(), stepStructure[0].baseIt));
 			*it = residue;
-			world.push_back(step);
+			world.push_back(step);	//! It must be executed after using iterator information
 		}
 
 		if (residue.plenty.size() == residue.value || 0 == residue.value) {

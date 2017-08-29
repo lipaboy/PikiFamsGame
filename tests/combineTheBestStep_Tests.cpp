@@ -55,18 +55,6 @@ TEST(TestCombineTheBestStep, thirdStep) {
 	;
 }
 
-//using PikiFamsGameBot::calculateResidue;
-
-//TEST(TestCalculateResidue, firstStep) {
-//	WorldSet world({
-//		GameSet({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 }, 4)
-//	});
-//	GameSet step({ 1, 2, 3, 4 }, 2);
-//	StepStructure stepStruct;
-//	stepStruct.push_back({ world.begin(), 4 });
-//	EXPECT_TRUE(GameSet({ 5, 6, 7, 8, 9, 0 }, 2) == calculateResidue(world, step, stepStruct));
-//}
-
 using PikiFamsGameBot::updateWorld;
 using PikiFamsGameBot::DigitSet;
 
