@@ -46,44 +46,34 @@ namespace PikiFamsGameBot {
 
 						//Variants of subset length = { <1, 3>; <2, 2>; <3, 1> } ~ <iIt, jIt>
 
-						// <1, 3>
-						if (jIt->plenty.size() >= 3) {
-							PossibleResultInterval posResSet13 =
-								calculatePossibleResultSet(*iIt, 1, *jIt, 3);
-							int combinationCount = posResSet13.right() - posResSet13.left();
-							if (combinationCount > 0 && combinationCount < minLength) {
-								stepStructure[0] = { iIt, 1 };
-								stepStructure[1] = { jIt, 3 };
-								minLength = combinationCount;
-								flagFindNew = true;
+						auto updateStepStructure = 
+							[&stepStructure, &minLength, &flagFindNew](WorldSetIterator fisrtIt,
+								uint32_t firstLen, WorldSetIterator secondIt, uint32_t secondLen) 
+						{
+							if (fisrtIt->plenty.size() >= firstLen && secondIt->plenty.size() >= secondLen)
+							{
+								PossibleResultInterval posResSet =
+									calculatePossibleResultSet(*fisrtIt, firstLen, *secondIt, secondLen);
+								int combinationCount = posResSet.right() - posResSet.left();
+								if (combinationCount > 0 && combinationCount < minLength) {
+									stepStructure[0] = { fisrtIt, firstLen };
+									stepStructure[1] = { secondIt, secondLen };
+									minLength = combinationCount;
+									flagFindNew = true;
+								}
 							}
-						}
+						};
+
+						//The order of execution is important because for my criterion
+						//no mean: {5, 6, Zero, Zero } or {5, Zero, Zero, Zero} from the {5, 6, 7, 8} = 1
+						// but first one is better. I know.
+
 						// <2, 2>
-						if (iIt->plenty.size() >= 2 && jIt->plenty.size() >= 2) {
-							PossibleResultInterval posResSet22 =
-								calculatePossibleResultSet(*iIt, 2, *jIt, 2);
-							int combinationCount = posResSet22.right() - posResSet22.left();
-							//if (combinationCount == 2)
-							//	std::cout << "smth debug" << std::endl;
-							if (combinationCount > 0 && combinationCount < minLength) {
-								stepStructure[0] = { iIt, 2 };
-								stepStructure[1] = { jIt, 2 };
-								minLength = combinationCount;
-								flagFindNew = true;
-							}
-						}
+						updateStepStructure(iIt, 2, jIt, 2);
+						// <1, 3>
+						updateStepStructure(iIt, 1, jIt, 3);
 						// <3, 1>
-						if (iIt->plenty.size() >= 3 && jIt->plenty.size() >= 1) {
-							PossibleResultInterval posResSet31 =
-								calculatePossibleResultSet(*iIt, 3, *jIt, 1);
-							int combinationCount = posResSet31.right() - posResSet31.left();
-							if (combinationCount > 0 && combinationCount < minLength) {
-								stepStructure[0] = { iIt, 3 };
-								stepStructure[1] = { jIt, 1 };
-								minLength = combinationCount;
-								flagFindNew = true;
-							}
-						}
+						updateStepStructure(iIt, 3, jIt, 1);
 					}
 				}
 			}
