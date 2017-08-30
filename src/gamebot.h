@@ -55,7 +55,7 @@ namespace PikiFamsGameBot {
 		bool operator!= (const GameSet& other) const { return !(other == (*this)); }
 
 		DigitSet plenty;
-		uint32_t value;		//count digits that precense into that set
+		uint32_t value;		//means count digits that precense into the game's number
 	};
 
 	typedef vector<GameSet> WorldSet;
@@ -89,9 +89,6 @@ namespace PikiFamsGameBot {
 															 const uint32_t subsetLength, Args... args) {
 		return calculatePossibleResultSet(set1, subsetLength) + calculatePossibleResultSet(args...);
 	}
-
-	//template <class... Args>
-	//bool containsAll(T element, Args... args) { return contains(element) && containsAll(args...); }
 
 	void combineTheBestStep(const WorldSet& world, StepStructure & stepStructure);
 
