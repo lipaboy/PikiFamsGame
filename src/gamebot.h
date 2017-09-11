@@ -7,6 +7,7 @@
 #include <vector>
 #include <algorithm>
 #include <iterator>
+#include <memory>
 
 #include "GameCreator.h"
 #include "lipaboyLibrary/src/intervals/interval.h"
@@ -24,6 +25,7 @@ namespace PikiFamsGameBot {
 	using std::set;
 	using std::vector;
 	using std::unordered_set;
+	using std::shared_ptr;
 
 	using LipaboyLib::CloseInterval;
 	using LipaboyLib::Comparable;
@@ -41,6 +43,15 @@ namespace PikiFamsGameBot {
 	//It means the access is better than unordered_set's
 	typedef set<DigitType> DigitSet;
 
+	// SetID defines difference between GameSets
+	struct GameSetID {
+		uint32_t value;
+		uint32_t length;	// Plenty length
+		uint32_t count = 0;		// Set counter that counts sets with the same <value, length>
+	};
+	//TODO: you need fast find, fast remove, fast insert container
+	typedef set<GameSetID> SetIDs;
+
 	//TODO: may be add typedef for set<DigitType>
 	struct GameSet
 	{
@@ -56,8 +67,10 @@ namespace PikiFamsGameBot {
 
 		DigitSet plenty;
 		uint32_t value;		//means count digits that precense into the game's number
+		shared_ptr<SetIDs> pIDSet;
 	};
 
+	//TODO: make it class with set/get (to change the SetIDs)
 	typedef vector<GameSet> WorldSet;
 	//TODO: replace const_iterator on iterator
 	using WorldSetIterator = WorldSet::const_iterator;
