@@ -149,11 +149,21 @@ namespace PikiFamsGameBot {
 		}
 	}
 
-	SolvingInfo solveTheGame(GameCreator game) {
-		std::srand(static_cast<uint32_t>(time(0)));
-		//Start
 
-		//Everything starts with entering in cycle
+
+
+
+	//-------------------------------------------------------------------//
+	//-------------------------Central Unit------------------------------//
+	//-------------------------------------------------------------------//
+
+
+
+	SolvingInfo solveTheGame(GameCreator game) 
+	{
+		std::srand(static_cast<uint32_t>(time(0)));
+
+		//Start
 
 		GameSet digits(DigitSet({ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }), stepLength);
 

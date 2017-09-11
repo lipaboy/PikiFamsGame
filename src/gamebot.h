@@ -70,6 +70,7 @@ namespace PikiFamsGameBot {
 		shared_ptr<SetIDs> pIDSet;
 	};
 
+	//TODO: make it class with set/get (to change the SetIDs)
 	typedef vector<GameSet> WorldSet;
 	//TODO: replace const_iterator on iterator
 	using WorldSetIterator = WorldSet::const_iterator;
