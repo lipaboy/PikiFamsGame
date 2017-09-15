@@ -6,7 +6,7 @@
 namespace PikiFamsGameBot {
 
 	//TODO: replace WorldSet on any_range (only reading the world container)
-	void combineTheBestStep(const WorldSet & world, StepStructure & stepStructure) 
+	void combineTheBestStep(WorldSet & world, StepStructure & stepStructure) 
 	{
 		int minLength = INT_MAX;		//1 - it is our valid minimum (not 0)
 
@@ -15,15 +15,15 @@ namespace PikiFamsGameBot {
 		//1. Sort out the one-set sets
 
 		stepStructure[0].size = stepLength;
-		for (auto cit = world.cbegin(); cit != world.cend(); cit++) {
-			if (cit->plenty.size() > stepLength) {	//size == stepLength - is useless because we will know nothing new about that set
-				PossibleResultInterval posResSet = calculatePossibleResultSet(*cit, stepLength);
+		for (auto it = world.begin(); it != world.end(); it++) {
+			if (it->plenty.size() > stepLength) {	//size == stepLength - is useless because we will know nothing new about that set
+				PossibleResultInterval posResSet = calculatePossibleResultSet(*it, stepLength);
 				//signed int for unpredictable behavior
 				int combinationCount = posResSet.right() - posResSet.left();	
 						//My criterion for selection best step
 				//TODO: create the criterion-lambda function
 				if (combinationCount > 0 && combinationCount < minLength) {
-					stepStructure[0].baseIt = (cit);
+					stepStructure[0].baseIt = (it);
 					minLength = combinationCount;
 				}
 			}
@@ -35,8 +35,8 @@ namespace PikiFamsGameBot {
 			bool flagFindNew = false;
 			stepStructure.resize(2u);
 
-			for (auto iIt = world.cbegin(); (iIt + 1) != world.cend(); iIt++) {
-				for (auto jIt = iIt + 1; jIt != world.cend(); jIt++) {
+			for (auto iIt = world.begin(); (iIt + 1) != world.end(); iIt++) {
+				for (auto jIt = iIt + 1; jIt != world.end(); jIt++) {
 					//We have two sets: *iIt, *jIt
 
 					//else - is useless because we will know nothing new about these sets
@@ -47,8 +47,8 @@ namespace PikiFamsGameBot {
 						//Variants of subset length = { <1, 3>; <2, 2>; <3, 1> } ~ <iIt, jIt>
 
 						auto updateStepStructure = 
-							[&stepStructure, &minLength, &flagFindNew](WorldSetConstIterator fisrtIt,
-								uint32_t firstLen, WorldSetConstIterator secondIt, uint32_t secondLen)
+							[&stepStructure, &minLength, &flagFindNew](WorldSetIterator fisrtIt,
+								uint32_t firstLen, WorldSetIterator secondIt, uint32_t secondLen)
 						{
 							if (fisrtIt->plenty.size() >= firstLen && secondIt->plenty.size() >= secondLen)
 							{
@@ -127,18 +127,18 @@ namespace PikiFamsGameBot {
 
 		if (stepStructure.size() == 1)	//It means that step is subset of a world's set
 		{
-			WorldSetIterator it = world.begin();
-			std::advance(it, 
-				std::distance<WorldSetConstIterator>(world.cbegin(), stepStructure[0].baseIt));
+			WorldSetIterator it = stepStructure[0].baseIt;
+			/*std::advance(it, 
+				std::distance<WorldSetConstIterator>(world.cbegin(), stepStructure[0].baseIt));*/
 			*it = residue;
-			world.push_back(step);	//! It must be executed after using iterator information
+			world.push_back(step);	//! It must be executed after using iterator's data
 		}
 
 		//TODO: you don't finish work!!!! (Update the world set)
 
 		if (residue.plenty.size() == residue.value || 0 == residue.value) {
-			for (auto it = residue.plenty.cbegin(); it != residue.plenty.cend(); it++)
-				world.emplace_back(DigitSet({ *it }),
+			for (auto cit = residue.plenty.cbegin(); cit != residue.plenty.cend(); cit++)
+				world.emplace_back(DigitSet({ *cit }),
 					(residue.value > 0u));	//every set has value 1 (if set.size == value),
 											//or 0 (if set.size == 0)
 			//not finish

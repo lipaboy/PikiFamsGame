@@ -79,7 +79,7 @@ namespace PikiFamsGameBot {
 	using WorldSetConstIterator = WorldSet::const_iterator;
 
 	struct GameSubSet {
-		WorldSetConstIterator baseIt;
+		WorldSetIterator baseIt;
 		uint32_t size;
 	};
 
@@ -107,7 +107,8 @@ namespace PikiFamsGameBot {
 		return calculatePossibleResultSet(set1, subsetLength) + calculatePossibleResultSet(args...);
 	}
 
-	void combineTheBestStep(const WorldSet& world, StepStructure & stepStructure);
+	//TODO: Return StepStructure with std::move
+	void combineTheBestStep(WorldSet& world, StepStructure & stepStructure);
 
 	/*GameSet calculateResidue(const WorldSet& world, const GameSet& step, 
 		const StepStructure& stepStructure);*/

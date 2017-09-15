@@ -48,8 +48,8 @@ TEST(TestCombineTheBestStep, thirdStep) {
 	});
 	combineTheBestStep(world, stepStruct);
 	EXPECT_TRUE(stepStruct.size() > 1
-		&& (set<WorldSetConstIterator>({ (stepStruct[0].baseIt), (stepStruct[1].baseIt) })
-			== set<WorldSetConstIterator>({ world.cbegin() + 1, world.cbegin() + 2 }))
+		&& (set<WorldSetIterator>({ (stepStruct[0].baseIt), (stepStruct[1].baseIt) })
+			== set<WorldSetIterator>({ world.begin() + 1, world.begin() + 2 }))
 		&& (multiset<uint32_t>({ 2, 2 }) == multiset<uint32_t>({ stepStruct[0].size, stepStruct[1].size }))
 	)
 		//<< "value: " << stepStruct[1].baseIt->value << " " << stepStruct[0].baseIt->value
