@@ -29,6 +29,8 @@ namespace PikiFamsGameBot {
 
 	using LipaboyLib::CloseInterval;
 	using LipaboyLib::Comparable;
+
+	
 	
 	//--------------------------Special structs---------------------------//
 
@@ -73,9 +75,11 @@ namespace PikiFamsGameBot {
 	//TODO: make it class with set/get (to change the SetIDs)
 	typedef vector<GameSet> WorldSet;
 	//TODO: replace const_iterator on iterator
-	using WorldSetIterator = WorldSet::const_iterator;
+	using WorldSetIterator = WorldSet::iterator;
+	using WorldSetConstIterator = WorldSet::const_iterator;
+
 	struct GameSubSet {
-		WorldSetIterator baseIt;
+		WorldSetConstIterator baseIt;
 		uint32_t size;
 	};
 

@@ -11,6 +11,7 @@ using PikiFamsGameBot::GameSet;
 using PikiFamsGameBot::StepStructure;
 using PikiFamsGameBot::WorldSet;
 using PikiFamsGameBot::WorldSetIterator;
+using PikiFamsGameBot::WorldSetConstIterator;
 
 using std::unordered_set;
 using std::set;
@@ -47,10 +48,11 @@ TEST(TestCombineTheBestStep, thirdStep) {
 	});
 	combineTheBestStep(world, stepStruct);
 	EXPECT_TRUE(stepStruct.size() > 1
-		&& (set<WorldSetIterator>({ (stepStruct[0].baseIt), (stepStruct[1].baseIt) })
-			== set<WorldSetIterator>({ world.begin() + 1, world.begin() + 2 }))
+		&& (set<WorldSetConstIterator>({ (stepStruct[0].baseIt), (stepStruct[1].baseIt) })
+			== set<WorldSetConstIterator>({ world.cbegin() + 1, world.cbegin() + 2 }))
 		&& (multiset<uint32_t>({ 2, 2 }) == multiset<uint32_t>({ stepStruct[0].size, stepStruct[1].size }))
-	)//<< "value: " << stepStruct[1].baseIt->value << " " << stepStruct[0].baseIt->value
+	)
+		//<< "value: " << stepStruct[1].baseIt->value << " " << stepStruct[0].baseIt->value
 	  //<< " subSetLength: " << stepStruct[1].size << " " << stepStruct[0].size
 	;
 }
@@ -72,7 +74,7 @@ TEST(TestUpdateWorld, firstStep) {
 	});
 	EXPECT_TRUE(world.size() == worldExpected.size());
 
-	for (WorldSetIterator it = world.cbegin(); it != world.cend(); it++) {
+	for (auto it = world.cbegin(); it != world.cend(); it++) {
 		for (WorldSet::iterator it2 = worldExpected.begin(); it2 != worldExpected.end(); it2++) {
 			if (*it == *it2) {
 				it2->plenty.clear();
