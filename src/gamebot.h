@@ -9,6 +9,9 @@
 #include <iterator>
 #include <memory>
 
+#include <boost/range/any_range.hpp>
+#include <boost/range/detail/any_iterator.hpp>
+
 #include "GameCreator.h"
 #include "lipaboyLibrary/src/intervals/interval.h"
 #include "lipaboyLibrary/src/intervals/cutoffborders.h"
@@ -55,8 +58,9 @@ namespace PikiFamsGameBot {
 	typedef set<GameSetID> SetIDs;
 
 	//TODO: may be add typedef for set<DigitType>
-	struct GameSet
+	class GameSet
 	{
+	public:
 		GameSet(const DigitSet& _plenty = DigitSet(), uint32_t _value = 0)
 			: plenty(_plenty), value(_value) {}
 
@@ -67,10 +71,20 @@ namespace PikiFamsGameBot {
 		//TODO: routine, you need every override operator== write operator!= through operator==
 		bool operator!= (const GameSet& other) const { return !(other == (*this)); }
 
+	public:
 		DigitSet plenty;
 		uint32_t value;		//means count digits that precense into the game's number
 		shared_ptr<SetIDs> pIDSet;
 	};
+
+
+	using ConstGameSetRange = boost::any_range<
+		GameSet,
+		boost::bidirectional_traversal_tag,
+		GameSet,//if you add & then Range will be mutable
+		std::ptrdiff_t
+	>;
+	
 
 	//TODO: make it class with set/get (to change the SetIDs)
 	typedef vector<GameSet> WorldSet;
@@ -79,7 +93,9 @@ namespace PikiFamsGameBot {
 	using WorldSetConstIterator = WorldSet::const_iterator;
 
 	struct GameSubSet {
-		WorldSetIterator baseIt;
+		WorldSetIterator 
+		//ConstGameSetRange::iterator
+			baseIt;
 		uint32_t size;
 	};
 
@@ -108,7 +124,7 @@ namespace PikiFamsGameBot {
 	}
 
 	//TODO: Return StepStructure with std::move
-	void combineTheBestStep(WorldSet& world, StepStructure & stepStructure);
+	void combineTheBestStep(WorldSet & world, StepStructure & stepStructure);
 
 	/*GameSet calculateResidue(const WorldSet& world, const GameSet& step, 
 		const StepStructure& stepStructure);*/

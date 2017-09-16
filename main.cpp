@@ -1,6 +1,6 @@
 #include <iostream>
 
-//#define TEST_MODE
+#define TEST_MODE
 //#define LIPABOY_MODE
 
 #ifdef TEST_MODE
@@ -15,37 +15,15 @@
 
 using namespace PikiFamsGame;
 using namespace PikiFamsGameBot;
-using namespace std;
-std::vector<int> getVect() { std::vector<int> vec({ 1, 2, 3 }); return std::move(vec); }
 
-class DumbArray {
-public:
-	DumbArray(size_t _size = 0) : array1( (!_size) ? nullptr : new int[_size] ), size(_size) {}
-	DumbArray(DumbArray && other) : DumbArray() { swap(*this, other); }
-	DumbArray(const DumbArray & other) 
-		: size(other.size), array1(other.size ? new int[other.size] : nullptr) 
-	{ 
-		memcpy(array1, other.array1, other.size * sizeof(array1));
-		
-	}
 
-	DumbArray & operator= (DumbArray other) {
-		swap(*this, other);
-		return *this;
-	}
+using IntAnyRange = boost::any_range<
+	int,
+	boost::bidirectional_traversal_tag,
+	int &,
+	std::ptrdiff_t
+>;
 
-	friend void swap(DumbArray & first, DumbArray & second) {
-		using std::swap;
-		swap(first.size, second.size);
-		swap(first.array1, second.array1);
-		std::cout << "Right swap" << std::endl;
-	}
-
-	~DumbArray() { if (size > 0) delete array1; }
-private:
-	int * array1;
-	size_t size;
-};
 
 #endif
 
@@ -65,13 +43,14 @@ int main(int argc, char *argv[])
 	using std::cout;
 	using std::endl;
 
-	GameCreator game({ 1, 2, 3, 4 });
-	GameCreator game2;
+	std::vector<int> vec({ 1, 2, 3 });
+	IntAnyRange range = vec;
+	range.begin().operator*() = 2;
+	std::copy(range.begin(), range.end(), std::ostream_iterator<int>(cout, " "));
 
-	DumbArray dumb(3);
-	DumbArray dumb2;
-	dumb2 = dumb;
-
+	return 0;
+	GameCreator game,
+		game2;
 
 	//--------------------Game Bot Try----------------------------//
 

@@ -6,14 +6,14 @@
 namespace PikiFamsGameBot {
 
 	//TODO: replace WorldSet on any_range (only reading the world container)
-	void combineTheBestStep(WorldSet & world, StepStructure & stepStructure) 
+	void combineTheBestStep(WorldSet & world, StepStructure & stepStructure)
 	{
 		int minLength = INT_MAX;		//1 - it is our valid minimum (not 0)
 
 		stepStructure.resize(1u);
 
 		//1. Sort out the one-set sets
-
+		
 		stepStructure[0].size = stepLength;
 		for (auto it = world.begin(); it != world.end(); it++) {
 			if (it->plenty.size() > stepLength) {	//size == stepLength - is useless because we will know nothing new about that set
@@ -23,7 +23,7 @@ namespace PikiFamsGameBot {
 						//My criterion for selection best step
 				//TODO: create the criterion-lambda function
 				if (combinationCount > 0 && combinationCount < minLength) {
-					stepStructure[0].baseIt = (it);
+					stepStructure[0].baseIt = it;
 					minLength = combinationCount;
 				}
 			}
