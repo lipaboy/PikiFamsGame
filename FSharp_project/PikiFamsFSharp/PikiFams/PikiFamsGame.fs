@@ -23,15 +23,22 @@ module PikiFamsGame =
     
     let rand = new Random()
 
+    // return random element from list
     let getRandItem list =
+        let rand = new Random()
         let len = List.length list
         list |> List.item (rand.Next() % len)
     
+    // shuffle collection and save it to sequance
     let randCortege list = 
         let rec loop list =
             seq { 
                 let item = getRandItem list
+                // push elem to seq
                 yield item
+                // Hook the next element by recursion 
+                // after removing the pushed elem from input list.
+                // The new list without elem is translated to loop as parameter.
                 yield! (List.except [item] list |> loop)
                 }
         loop list
