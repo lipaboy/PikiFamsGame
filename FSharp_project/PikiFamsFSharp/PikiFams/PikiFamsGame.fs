@@ -48,11 +48,12 @@ module PikiFamsGame =
 
     //---------------GameCreator-------------//
 
+    // Structure Turn Info
     type GameTurnInfo(pikis : int, famas : int) =
         member this.Pikis = pikis
         member this.Famas = famas
 
-    type GameCreator(guessingNumber:GameCortege) =
+    type GameCreator(guessingNumber : GameCortege) =
         let guessingNumber = guessingNumber
         let mutable turnCount_ = 0
         
@@ -60,8 +61,10 @@ module PikiFamsGame =
         member this.TurnCount() = turnCount_
         //TODO: throw exception if length is not appropriate
         
+        // construction without paramteres
         new() =
             let cort = getRandCortege()
+            // Debug for
             cort |> Array.iter (printf "%d ")
             printfn ""
             GameCreator(cort)
