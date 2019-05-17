@@ -70,7 +70,7 @@ module PikiFamsGame =
             GameCreator(cort)
 
         member this.Guess(likelyNumber:GameCortege) =
-            makeTurn()
+            do makeTurn()
             let mutable pikis = 0
             let mutable famas = 0
             for i in 0 .. guessingNumber.Length - 1 do
@@ -91,7 +91,7 @@ module PikiFamsGame =
         assert(info.Pikis = 1)
 
     let runAllTheTests =
-        testGuess()
+        do testGuess()
 
             
 

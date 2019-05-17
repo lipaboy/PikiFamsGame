@@ -12,7 +12,7 @@ using PikiFamsGameBot::GameSet;
 using PikiFamsGameBot::calculatePossibleResultSet;
 using PikiFamsGameBot::PossibleResultInterval;
 
-using namespace LipaboyLib;
+using namespace lipaboy_lib;
 
 /*---For intervals---*/
 

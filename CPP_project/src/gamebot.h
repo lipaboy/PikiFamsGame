@@ -27,8 +27,8 @@ namespace PikiFamsGameBot {
 	using std::unordered_set;
 	using std::shared_ptr;
 
-	using LipaboyLib::CloseInterval;
-	using LipaboyLib::Comparable;
+	using lipaboy_lib::CloseInterval;
+	//using lipaboy_lib::Comparable;
 	
 	//--------------------------Special structs---------------------------//
 
